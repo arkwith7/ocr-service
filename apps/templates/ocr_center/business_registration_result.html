@@ -1,0 +1,168 @@
+{% extends "tesseract_ocr/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} Home {% endblock %}
+
+{% block extrahead %} {% endblock %}
+
+{% block extrastyle %}
+<style>
+body { background-color: #DDDDDD; font: 12px sans-serif; }
+
+td, th  {
+    border-width: 1px;
+    border-color: #99a;
+    border-style: solid;
+}
+
+table {
+    margin: 4px 2px;
+    background-color: #f0f0ff;
+    border-collapse: collapse;
+    border-width: 2px;
+    border-color: #669;
+    border-style: solid;
+}
+
+td, th {
+    vertical-align: top;
+    margin: 0px;
+    padding: 2px 6px
+}
+
+td {
+    text-align: left;
+    background-color: white;
+}
+
+th {
+    text-align: right;
+    background-color: #eef;
+}
+
+.boolean, .null {
+    font-style: italic;
+}
+
+.over {
+    background-color: pink;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <div class="col-lg-5">
+
+        <h3 align="left" style="color:tomato;font-family:'Poppins'" >사업자등록증 이미지</h3>
+        <img style="border-color:white;border:3px solid white;" height="auto" width="85%"
+            src="/static/media/{{data.image}}" />
+
+
+    </div>
+    <br>
+    <div class="col-lg-5">
+        <h3 align="left"  style="color:tomato;font-family:'Poppins'" >이미지 인식 결과</h3>
+    {% if data.ocr_text %} 
+        <textarea id="source" style="display:none;">{{data.ocr_text|safe }}</textarea>
+        <input type="button" id="show_button" value="Show" />
+        <div id="container">Loading...</div>
+    {% else %} 
+        {% with data.businessregistrationocrtext_set.last as ocrtext%}
+        <p style="color:white;font-family:'Poppins'">{{ocrtext.text|safe }}</p>
+        {% endwith%}
+    {% endif%} 
+
+    </div>
+</div>
+
+{% endblock %}
+{% block extrascript %} 
+<script  type="text/javascript"> 
+$(function(){
+    // ===================================================
+        
+        function objectToTable(obj) {
+            var table = $('<table>').append('<tbody>');
+            for ( var key in obj ) {
+            var tr = $('<tr>');
+            var th = $('<th>').append(key);
+            var td = $('<td>');
+            var value;
+            if ( typeof(obj[key]) == 'object' ) {
+                if ( obj[key] ) {
+                    value = objectToTable(obj[key]);
+                }
+                else {
+                    value = '<span class="null">null</span>';
+                }
+            }
+            else if ( typeof(obj[key]) == 'boolean' ) {
+                var str = (obj[key]) ? 'true' : 'false';
+                value = '<span class="boolean">'+str+'</span>'; 
+            }
+            else if ( typeof(obj[key]) == 'string' ) {
+                value = '<span class="string">"'+obj[key]+'"</span>';
+            }
+            else {
+                value = obj[key].valueOf();
+            }
+            td.append(value);
+            tr.append(th).append(td);
+            table.append(tr);
+            }
+            return table;
+        }
+        
+        $('#show_button').click(function(){
+            var value = '';
+            var source = $('#source').val();
+            if ( source ) {
+            try {
+                value = objectToTable(eval("("+source+")"));
+            } catch (e) {
+                value = '<pre>'+e+'</pre>';
+            }
+            }
+            $('#container').empty().append(value);
+        });
+        
+        $(document).ready(function(){
+            $('#show_button').trigger('click');
+        });
+    
+        $('#source')
+            .live('drop', function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                $(this).removeClass('over');
+                var files = e.originalEvent.dataTransfer.files;
+                    if ( files && files.length > 0 ) {
+                        var file = files[0];
+                        var reader = new FileReader();
+                        reader.onload = function(event)	{
+                            //console.log(this.result);
+                            $('#source').val(this.result);
+                            $('#show_button').trigger('click');
+                        }
+                        reader.readAsText(file);
+                    }
+                })
+            .live('dragenter', function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                $(this).addClass('over');
+            })
+            .live('dragleave', function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                $(this).removeClass('over');
+            });
+        
+    // ===================================================
+    });
+</script>
+{% endblock %}

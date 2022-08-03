@@ -1,0 +1,46 @@
+{% extends "tesseract_ocr/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} Home {% endblock %}
+
+{% block extrahead %} {% endblock %}
+
+{% block extrastyle %} {% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <div class="col-lg-7 banner-txt">
+
+        <h3 align="left">Demo</h3>
+        <img style="border-color:white;border:3px solid white;" align="left" height="75%" width="85%"
+            src="{% static 'tesseract_ocr/images/arkwith_ocr_main.jpg' %}" />
+
+
+    </div>
+    <div class="col-lg-5">
+        <img height="90%" width="115%" src="{% static 'tesseract_ocr/images/arkwith_ocr_result.jpg' %}" />
+        <h6 align="center" style="color:tomato;font-family: 'Poppins', sans-serif;padding-top:10px;">photograph of a SMS message</h6>
+
+
+    </div>
+
+
+
+    <div class="col-lg-5">
+    </div>
+</div>
+
+            
+{% endblock %}
+
+{% block extrascript %} {% endblock %}
+            
+
+
+
+
+
+
+    

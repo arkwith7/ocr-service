@@ -1,0 +1,126 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} OCR센터소개 {% endblock %} 
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+  <!-- IonIcons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+
+{% endblock stylesheets %}
+
+{% block content %}    
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">OCR센터소개</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">OCR센터소개</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <style>
+      .overview {
+         max-width: 100%;
+         height: auto;
+      }
+      
+      textarea {
+         resize: both;
+         overflow: auto;
+         width: 100%;
+      }
+      </style>
+      <div class="container mt-5 p-5">
+         <h2 style="border-bottom: 1.3px solid gray;">
+            <span style="display: inline-block; border-bottom: 6px solid gray;">OCR 센터는<br><b>최적의 OCR 기술</b>을 제공합니다.
+            </span>
+         </h2> 
+         <br><br> 
+         <div class="jumbotron ">
+         <p>
+            <b style="color: #3ea8dd;">[OCR 대상 문서]</b> Any Device! Any Format! OCR 대상문서는 형식과 포멧의 제한이 없습니다.
+         </p>
+         <br>
+         <p>
+            <b style="color: #3ea8dd;">[OCR 센터 처리 프로세스]</b> 온라인 신청으로 최상의 OCR 결과를 제공합니다.<br><br> <img class="overview" src="/static/assets/img/process.png">  
+         </p>
+         <br>
+         <p>
+            <b style="color: #3ea8dd;">[OCR 결과 제공]</b> Any Browser! 브라우저의 제약이 없습니다.
+         </p>
+         <br>
+         </div>
+      </div>
+      <div class="container mt-5 p-5 "> 
+         <h2 style="border-bottom: 0.3px solid gray;">
+            <span style="display: inline-block; border-bottom: 6px solid gray;">OCR 센터 <b>Overview</b></span>
+         </h2>
+         <br><br>
+         <div class="mx-auto row text-center">
+            <div class="col-lg-3 mt-2 mx-auto">
+               <img class="overview" src="/static/assets/img/overview1.png">
+            </div>
+            <div class="col-lg-6 mx-auto">
+               <img class="overview" src="/static/assets/img/overview2.png"> 
+            </div>
+            <div class="col-lg-3 mt-2 mx-auto">
+               <img class="overview" src="/static/assets/img/overview3.png">
+            </div>
+         </div>
+      </div>
+      <div class="text-center mb-5">
+         <a href="/main.jsp"><button
+               class="btn btn-primary btn-lg">이전</button></a>
+      </div>
+      
+      <style>
+      #map {
+         height: 250px;
+         width: 100%;
+      }
+      </style>    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE -->
+  <script src="/static/assets/js/adminlte.js"></script>
+
+  <!-- OPTIONAL SCRIPTS -->
+  <script src="/static/assets/plugins/chart.js/Chart.min.js"></script>
+  <script src="/static/assets/js/demo.js"></script>
+  <script src="/static/assets/js/pages/dashboard3.js"></script>
+
+{% endblock javascripts %}

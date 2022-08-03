@@ -1,0 +1,139 @@
+{% extends "tesseract_ocr/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} Home {% endblock %}
+
+{% block extrahead %} {% endblock %}
+
+{% block extrastyle %} {% endblock %}
+
+{% block extrascript %} 
+<script>
+    $('.custom-file-input').on('change', function() {
+       let fileName = $(this).val().split('\\').pop();
+       $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+    
+    
+    function show_img_details(img_path){
+        $('#img_detail').attr("src", img_path);
+        $('#img_detail_modal').modal('toggle');
+    }
+    
+</script>
+
+{% endblock %}
+
+{% block content %}
+<!--
+<div class="col-lg-7 banner-txt text-center">
+    <h3>Arkwith OCR</h3>
+</div>
+<div class="offset-md-2 col-md-8 my-5" id="image_form"> 
+-->
+<div id="image_form">
+    <form action="#image_form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <div class="custom-file my-2">
+                {{image_form.image|add_class:"custom-file-input"}}
+                <label class="custom-file-label">{{ image_form.image.label }}</label>
+                {% for error in field.errors %}
+                <span class="badge badge-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">OCR</button>
+        </fieldset>
+    </form>
+</div>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col" class="text-center" style="color:tomato;font-family: 'Poppins', sans-serif;padding-top:10px;">#</th>
+            <th scope="col" class="text-center" style="color:tomato;font-family: 'Poppins', sans-serif;padding-top:10px;">Image</th>
+            <th scope="col" class="d-none d-md-table-cell" style="color:tomato;font-family: 'Poppins', sans-serif;padding-top:10px;">OCR Text</th>
+            <th scope="col" class="text-center" style="color:tomato;font-family: 'Poppins', sans-serif;padding-top:10px;">Detail</th>
+            <th scope="col" class="text-center" style="color:tomato;font-family: 'Poppins', sans-serif;padding-top:10px;">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for image in image_list %}
+        <tr>
+            <th scope="row" style="color:tomato;font-family: 'Poppins', sans-serif;">{{image.id}}</th>
+            <td class="text-center">
+                <div class="clickable_img"  onclick="show_img_details('/static/media/{{image.image}}')">
+                    <img class="img-fluid img-thumbnail " src="/static/media/{{image.image}}" alt="{{image.image}}" width="100" />
+                </div>
+            </td>
+            {% with image.ocrtext_set.last as ocrtext%}
+            <td class="d-none d-md-table-cell" style="color:tomato;font-family: 'Poppins', sans-serif;">{{ ocrtext.text|truncatechars:350}}</td>
+            {% endwith%}
+            <td class="text-center">
+                <a href="{% url 'tesseract_ocr:detail_view' image.id %}">
+                    <button type="button" class="btn btn-btn-outline-secondary">
+                        Detail<!-- <i class='fab fa-edit'></i> -->
+                    </button>
+                </a>
+            </td>
+            <td class="text-center">
+                <a href="{% url 'tesseract_ocr:delete' image.id %}">
+                    <button type="button" class="btn btn-btn-outline-secondary">
+                        Delete<!-- <i class="fab fa-trash"></i> -->
+                    </button>
+                </a>
+            </td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+    {% if image_list.has_other_pages %}
+    <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-left">
+      {% if image_list.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ image_list.previous_page_number }}">&laquo;</a></li>
+      {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#"><span>&laquo;</span></a></li>
+      {% endif %}
+      {% for i in image_list.paginator.page_range %}
+        {% if image_list.number == i %}
+          <li class="page-item active"><a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if image_list.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ image_list.next_page_number }}">&raquo;</a></li>
+      {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#"><span>&raquo;</span></a></li>
+      {% endif %}
+    </ul>
+    </nav>
+    {% endif %}
+    </div>
+</div>
+
+
+<div id="img_detail_modal" class="modal mt-5" tabindex="-1" role="dialog"  data-backdrop="false">
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:tomato;">
+                    <span aria-hidden="true" style="color:tomato;">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="color:white;">
+                <img id="img_detail" class="img-fluid" src="" alt="" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+

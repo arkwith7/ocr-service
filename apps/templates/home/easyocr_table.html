@@ -1,0 +1,12 @@
+<table class="table table-striped">
+  <tbody>
+    {% for bbox, text, pro in displaytext %}
+    <tr>
+      <td>{{ bbox }}</td>
+      <td>{{ text }}</td>
+      <td>{{ pro }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
