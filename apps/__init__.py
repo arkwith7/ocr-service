@@ -19,7 +19,8 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    for module_name in ('authentication', 'home', 'ocr_center'):
+    for module_name in ('authentication', 'home', 'ocr_api'):
+    # for module_name in ('authentication', 'home'):
         module = import_module('apps.{}.routes'.format(module_name))
         app.register_blueprint(module.blueprint)
 
@@ -38,6 +39,7 @@ def configure_database(app):
 def create_app(config):
     app = Flask(__name__)
     app.config.from_object(config)
+    app.config['JSON_AS_ASCII'] = False
     register_extensions(app)
     register_blueprints(app)
     configure_database(app)
