@@ -104,8 +104,7 @@ RUN unzip craft_mlt_25k.zip -d ~/.EasyOCR/model
 RUN  pip install --upgrade pip --no-cache-dir && \
      pip install --upgrade setuptools --no-cache-dir && \
      pip install loguru --no-cache-dir && \
-     pip install cryptography==2.6.1 --no-cache-dir && \
-     pip install opencv-python==4.5.5.64 --no-cache-dir
+     pip install cryptography==2.6.1 --no-cache-dir
 
 COPY requirements.txt /home/project/ocr-api/
 RUN pip install --no-cache-dir -r requirements.txt

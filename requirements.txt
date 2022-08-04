@@ -15,7 +15,8 @@ Flask-Minify==0.37
 
 # flask_mysqldb
 Pillow
-# opencv-python
+opencv-python==4.5.5.64
 pytesseract
 Image
 pyyaml
+matplotlib
