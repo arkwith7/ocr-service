@@ -20,4 +20,5 @@ pytesseract
 Image
 pyyaml
 pandas
+imutils
 matplotlib
