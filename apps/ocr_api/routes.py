@@ -6,8 +6,6 @@ Copyright (c) 2019 - present AppSeed.us
 from apps.ocr_api import blueprint
 # -*- coding: utf-8 -*-
 from flask import jsonify, request, abort
-from flask_restx import Resource
-# from . import api
 import urllib
 import numpy as np
 import pytesseract
@@ -79,54 +77,55 @@ def recognition(image):
     return results
 
 
-@blueprint.route('/ocr', methods=['GET', 'POST'])
+@blueprint.route('/ocr', methods=['POST'])
 def process():
     """
     received request from client and process the image
     :return: dict of width and points
     """
-    print("OCR Start......")
-    print("request={}".format(request))
-    print("request.form={}".format(request.form))
-    print("request.files={}".format(request.files['file']))
+    print("request.headers={}".format(request.headers))
+    print("request.content_type={}".format(request.content_type))
+    print("request.headers['Content-Type']={}".format(request.headers['Content-Type']))
+    if (request.content_type.startswith('application/json')):
+        print("OCR application/json Start......")
+        print("request={}".format(request))
+        print("request.data={}".format(request.data))
+        data_json = json.loads(request.data)
+        print("data_json=",data_json)
+        return jsonify(data_json)
 
-    metadata = request.form
-    # doc_class = metadata['doc_class']
-    # image = metadata['image_url']
-    # secret_key = metadata['secret_key']
-    secret_key = 'easyocr_vdt'
-    # return jsonify(metadata)
-    # doc_class, image, secret_key = data_process(metadata)
+    elif (request.content_type.startswith('multipart/form-data')):
+        print("OCR multipart/form-data Start......")
+        print("request={}".format(request))
+        print("request.form={}".format(request.form))
+        print("request.files={}".format(request.files['file']))
+        for key, value in request.form.items():
+            print("data['{}']={}".format(key,value))
 
-    image_file = request.files['file']
+        metadata = request.form
+        # doc_class = metadata['doc_class']
+        # image = metadata['image_url']
+        # secret_key = metadata['secret_key']
+        secret_key = 'easyocr_vdt'
+        # return jsonify(metadata)
+        # doc_class, image, secret_key = data_process(metadata)
 
-    if image_file:
-        image = Image.open(image_file)
+        image_file = request.files['file']
 
-    if secret_key == SECRET_KEY:
-        results = recognition(image)
-        return {
-            "results": results
-        }
+        if image_file:
+            image = Image.open(image_file)
+
+        if secret_key == SECRET_KEY:
+            results = recognition(image)
+            return {
+                "results": results
+            }
+        else:
+            abort(401)
     else:
-        abort(401)
+        return "415 Unsupported request Type ;)"
 
-# @api.route('/')
-# class Document(Resource):
-#     @api.expect(_document, validate=True)
-#     @api.response(201, 'Upload Image Document successfully Text Recognition.')
-#     @api.doc('Creates a Text Recognition Json ')
-#     def post(self):
-#         """Creates a Text Recognition Json from Upload Image Document """
-#         data = request.get_json()
-#         doc_class, image, secret_key = data_process(data)
-#         if secret_key == SECRET_KEY:
-#             results = recognition(image)
-#             return {
-#                 "results": results
-#             }
-#         else:
-#             api.abort(404)
+
 
 
 

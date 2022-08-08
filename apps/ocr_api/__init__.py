@@ -2,8 +2,9 @@
 """
 Copyright (c) 2019 - present AppSeed.us
 """
-# from flask_restx import Api
 from flask import Blueprint
+# from flask_restx import Api
+# from flask_restplus import Api
 # from .routes import api as docs_ns
 
 blueprint = Blueprint(
