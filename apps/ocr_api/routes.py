@@ -8,30 +8,15 @@ from apps.ocr_api import blueprint
 from flask import jsonify, request, abort
 import urllib
 import numpy as np
-import pytesseract
 import cv2
-import easyocr
-import os
-
-try:
-    from PIL import Image
-except ImportError:
-    import Image
-
+from PIL import Image
 import json
-import logging
 
+from apps.ocr_api.models import Document
 # from .dto import DocumentDto
 
 # api = DocumentDto.api # -> 모델 자체를 호출
 # _document = DocumentDto.document # -> 모델의 각 칼럼을 호출
-
-SECRET_KEY = os.getenv('SECRET_KEY', 'easyocr_vdt');
-reader = easyocr.Reader(['ko','en'], gpu=False) # ['ja','en']
-
-UPLOAD_FOLDER = './media/uploads'
-
-
 
 def url_to_image(url):
     """
@@ -42,39 +27,16 @@ def url_to_image(url):
     resp = urllib.request.urlopen(url)
     image = np.asarray(bytearray(resp.read()), dtype="uint8")
     print("url = ", url)
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-    return image
+    # image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    image = cv2.imdecode(image, cv2.IMREAD_UNCHANGED)
 
+    # image 크기 조정 with = 1346,height = 1732
+    dim = (1400, 1550)
+  
+    # resize image
+    resized = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
 
-def data_process(data):
-    """
-    read params from the received data
-    :param data: in json format
-    :return: params for image processing
-    """
-    doc_class = data["doc_class"]
-    image_url = data["image_url"]
-    secret_key = data["secret_key"]
-
-    return doc_class, url_to_image(image_url), secret_key
-
-
-def recognition(image):
-    """
-    :param image:
-    :return:
-    """
-    results = []
-    texts = reader.readtext(image)
-    for (bbox, text, prob) in texts:
-        output = {
-            "coordinate": [list(map(float, coordinate)) for coordinate in bbox],
-            "text": text,
-            "score": prob
-        }
-        results.append(output)
-
-    return results
+    return resized
 
 
 @blueprint.route('/ocr', methods=['POST'])
@@ -90,36 +52,37 @@ def process():
         print("OCR application/json Start......")
         print("request={}".format(request))
         print("request.data={}".format(request.data))
+        document = Document()
         data_json = json.loads(request.data)
         print("data_json=",data_json)
-        return jsonify(data_json)
+        document.doc_class = data_json['doc_class']
+        document.image_url = data_json['image_url']
+        image = url_to_image(document.image_url)
+        print("image size : ", image.shape)
+        json_object = document.execute_ocr(image)
+        return jsonify(json_object)
 
     elif (request.content_type.startswith('multipart/form-data')):
         print("OCR multipart/form-data Start......")
         print("request={}".format(request))
         print("request.form={}".format(request.form))
         print("request.files={}".format(request.files['file']))
+        document = Document()
         for key, value in request.form.items():
             print("data['{}']={}".format(key,value))
-
-        metadata = request.form
-        # doc_class = metadata['doc_class']
-        # image = metadata['image_url']
-        # secret_key = metadata['secret_key']
-        secret_key = 'easyocr_vdt'
-        # return jsonify(metadata)
-        # doc_class, image, secret_key = data_process(metadata)
+            if key == 'doc_class':
+                document.doc_class = value
+            elif key == 'image_url':
+                document.image_url = value
 
         image_file = request.files['file']
 
         if image_file:
-            image = Image.open(image_file)
-
-        if secret_key == SECRET_KEY:
-            results = recognition(image)
-            return {
-                "results": results
-            }
+            image = cv2.imdecode(np.frombuffer(image_file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+            print("image size : ", image.shape)
+            # image = Image.open(image_file)
+            json_object = document.execute_ocr(image)
+            return jsonify(json_object)
         else:
             abort(401)
     else:
