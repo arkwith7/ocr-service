@@ -53,6 +53,8 @@ RUN apt-get update && \
     imagemagick \
     python3-psycopg2 \
     sudo \
+    # pdf2image
+    poppler-utils \ 
     libatlas-base-dev \
     gfortran nginx supervisor \
     unzip \

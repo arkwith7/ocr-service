@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: ocrapi_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - 5005
+  nginx:
+    build: ./nginx
+    ports:
+      - "5085:5085"
+    depends_on:
+      - web

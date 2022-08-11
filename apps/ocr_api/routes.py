@@ -55,6 +55,8 @@ def process():
         document = Document()
         data_json = json.loads(request.data)
         print("data_json=",data_json)
+        if (len(data_json['doc_class']) < 1) or (len(data_json['image_url']) < 1):
+            return "415 Invalid request data"
         document.doc_class = data_json['doc_class']
         document.image_url = data_json['image_url']
         image = url_to_image(document.image_url)
@@ -77,16 +79,18 @@ def process():
 
         image_file = request.files['file']
 
+        if (not image_file) or (len(document.doc_class) < 1):
+            return "415 Invalid request data"        
+
         if image_file:
             image = cv2.imdecode(np.frombuffer(image_file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
             print("image size : ", image.shape)
             # image = Image.open(image_file)
             json_object = document.execute_ocr(image)
             return jsonify(json_object)
-        else:
-            abort(401)
+
     else:
-        return "415 Unsupported request Type ;)"
+        return "415 Unsupported request.content_type ;)"
 
 
 

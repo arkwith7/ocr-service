@@ -4,6 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from flask import Flask
+from flask_cors import CORS
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from importlib import import_module
@@ -38,6 +39,7 @@ def configure_database(app):
 
 def create_app(config):
     app = Flask(__name__)
+    CORS(app)
     app.config.from_object(config)
     app.config['JSON_AS_ASCII'] = False
     register_extensions(app)
