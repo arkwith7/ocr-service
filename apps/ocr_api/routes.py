@@ -5,7 +5,9 @@ Copyright (c) 2019 - present AppSeed.us
 
 from apps.ocr_api import blueprint
 # -*- coding: utf-8 -*-
-from flask import jsonify, request, abort
+from flask import jsonify, request
+from flask_cors import CORS, cross_origin
+
 import urllib
 import numpy as np
 import cv2
@@ -40,6 +42,7 @@ def url_to_image(url):
 
 
 @blueprint.route('/ocr', methods=['POST'])
+@cross_origin(origin='*')
 def process():
     """
     received request from client and process the image

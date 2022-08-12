@@ -2,14 +2,14 @@ curl -X POST -H "Content-type: multipart/form-data"  \
  -F "doc_class=ORG_수출신고필증" \
  -F "image_url=" \
  -F "file=@./output/수출면장-FAX-img0.jpg" \
-http://localhost:5085/ocr
+http://localhost:7080/ocr
 
 curl -X POST -H "Content-Type: application/json" \
   --data '{"doc_class":"ORG_수입신고필증","image_url":"http://www.sgmarine.kr/files/attach/images/645/791/001/80ed53c3f656b7f56095154321c7cfd8.jpg"}' \
-  http://localhost:5085/ocr
+  http://localhost:7080/ocr
 
 curl -X POST -H "Content-type: multipart/form-data"  \
  -F "doc_class=ORG_수입신고필증" \
  -F "image_url=" \
  -F "file=@./output/수입면장-FAX-img0.jpg" \
-http://localhost:5085/ocr
+http://localhost:7080/ocr
