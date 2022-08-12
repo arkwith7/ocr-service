@@ -43,7 +43,7 @@ def url_to_image(url):
 
 
 @blueprint.route('/ocr', methods=['POST'])
-@cross_origin(supports_credentials=True)
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def process():
     """
     received request from client and process the image

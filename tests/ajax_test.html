@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <p>
+        이미지 업로드 테스트 창
+    </p>
+    <div>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="imageInput" />
+        </form>
+        <hr />
+        <button onclick="upload()">
+            업로드
+        </button>
+        <hr />
+        <p>
+            업로드결과:
+        </p>
+        <p id="resultUploadPath"></p>
+    </div>
+    <!-- Ajax JavaScript File Upload Logic -->
+    <script>
+        function upload() {
+            const imageInput = $("#imageInput")[0];
+            // 파일을 여러개 선택할 수 있으므로 files 라는 객체에 담긴다.
+            console.log("imageInput: ", imageInput.files)
+
+            if (imageInput.files.length === 0) {
+                alert("파일은 선택해주세요");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", imageInput.files[0]);
+            formData.append("doc_class", "ORG_수출신고필증");
+            formData.append("image_url", imageInput.files[0]);
+
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:7080/ocr",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (rtn) {
+
+                    alert(rtn.data);
+                    const message = rtn.data;
+                    console.log("message: ", message)
+                    $("#resultUploadPath").text(message)
+                },
+                err: function (err) {
+                    console.log("err:", err)
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
