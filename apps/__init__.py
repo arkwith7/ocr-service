@@ -39,7 +39,7 @@ def configure_database(app):
 
 def create_app(config):
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, support_credentials=True)
     app.config.from_object(config)
     app.config['JSON_AS_ASCII'] = False
     register_extensions(app)

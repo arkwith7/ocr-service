@@ -3,9 +3,10 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+from flask import Flask
 from apps.ocr_api import blueprint
 # -*- coding: utf-8 -*-
-from flask import jsonify, request
+from flask import jsonify, request, make_response
 from flask_cors import CORS, cross_origin
 
 import urllib
@@ -42,7 +43,7 @@ def url_to_image(url):
 
 
 @blueprint.route('/ocr', methods=['POST'])
-@cross_origin(origin='*')
+@cross_origin(supports_credentials=True)
 def process():
     """
     received request from client and process the image
@@ -51,6 +52,11 @@ def process():
     print("request.headers={}".format(request.headers))
     print("request.content_type={}".format(request.content_type))
     print("request.headers['Content-Type']={}".format(request.headers['Content-Type']))
+    # header = response.headers
+    # header['Access-Control-Allow-Origin'] = '*'
+    # header['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    # header['Access-Control-Allow-Methods'] = 'OPTIONS, HEAD, GET, POST, DELETE, PUT'
+
     if (request.content_type.startswith('application/json')):
         print("OCR application/json Start......")
         print("request={}".format(request))
@@ -65,7 +71,15 @@ def process():
         image = url_to_image(document.image_url)
         print("image size : ", image.shape)
         json_object = document.execute_ocr(image)
-        return jsonify(json_object)
+        response = make_response(
+            jsonify(json_object),
+            200,
+        )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS, HEAD, GET, POST, DELETE, PUT'
+        response.headers['Content-Type'] = "application/json"
+        return response
 
     elif (request.content_type.startswith('multipart/form-data')):
         print("OCR multipart/form-data Start......")
@@ -90,7 +104,15 @@ def process():
             print("image size : ", image.shape)
             # image = Image.open(image_file)
             json_object = document.execute_ocr(image)
-            return jsonify(json_object)
+            response = make_response(
+                jsonify(json_object),
+                200,
+            )
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+            response.headers['Access-Control-Allow-Methods'] = 'OPTIONS, HEAD, GET, POST, DELETE, PUT'
+            response.headers['Content-Type'] = "application/json"
+            return response
 
     else:
         return "415 Unsupported request.content_type ;)"
