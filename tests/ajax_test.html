@@ -1,16 +1,9 @@
 <html>
 
 <head>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-=======
+
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
->>>>>>> 707ffcc (20220816-오전)
-=======
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
->>>>>>> smbc2
+
 </head>
 
 <body>
@@ -45,17 +38,8 @@
 
             const formData = new FormData();
             formData.append("file", imageInput.files[0]);
-<<<<<<< HEAD
-<<<<<<< HEAD
-            formData.append("doc_class", "ORG_수출신고필증");
-=======
             formData.append("doc_class", "ORG_수입신고필증");
->>>>>>> 707ffcc (20220816-오전)
-=======
-            formData.append("doc_class", "ORG_수입신고필증");
->>>>>>> smbc2
             formData.append("image_url", imageInput.files[0]);
-
 
             $.ajax({
                 type: "POST",
@@ -65,18 +49,9 @@
                 data: formData,
                 success: function (rtn) {
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    alert(rtn.data);
-                    const message = rtn.data;
-=======
                     alert(JSON.stringify(rtn));
                     const message = JSON.stringify(rtn, null, 4);
->>>>>>> 707ffcc (20220816-오전)
-=======
-                    alert(JSON.stringify(rtn));
-                    const message = JSON.stringify(rtn, null, 4);
->>>>>>> smbc2
+
                     console.log("message: ", message)
                     $("#resultUploadPath").text(message)
                 },

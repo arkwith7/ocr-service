@@ -43,15 +43,6 @@ def url_to_image(url):
 
 
 @blueprint.route('/ocr', methods=['POST'])
-<<<<<<< HEAD
-<<<<<<< HEAD
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
-=======
-# @cross_origin(supports_credentials=True)
->>>>>>> 707ffcc (20220816-오전)
-=======
-# @cross_origin(supports_credentials=True)
->>>>>>> smbc2
 def process():
     """
     received request from client and process the image

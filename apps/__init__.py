@@ -39,9 +39,7 @@ def configure_database(app):
 def create_app(config):
     app = Flask(__name__)
     app.config.from_object(config)
-    app.config['CORS_HEADERS'] = 'Content-Type'
     app.config['JSON_AS_ASCII'] = False
-    cors = CORS(app, resources={r"/ocr": {"origins": "http://localhost:7080"}})
     register_extensions(app)
     register_blueprints(app)
     configure_database(app)
