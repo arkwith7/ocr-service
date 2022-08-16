@@ -4,7 +4,6 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from flask import Flask
-from flask_cors import CORS
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from importlib import import_module

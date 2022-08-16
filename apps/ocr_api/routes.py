@@ -7,7 +7,7 @@ from flask import Flask
 from apps.ocr_api import blueprint
 # -*- coding: utf-8 -*-
 from flask import jsonify, request, make_response
-from flask_cors import CORS, cross_origin
+# from flask_cors import CORS, cross_origin
 
 import urllib
 import numpy as np
@@ -43,15 +43,19 @@ def url_to_image(url):
 
 
 @blueprint.route('/ocr', methods=['POST'])
+<<<<<<< HEAD
 @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+=======
+# @cross_origin(supports_credentials=True)
+>>>>>>> 707ffcc (20220816-오전)
 def process():
     """
     received request from client and process the image
     :return: dict of width and points
     """
-    print("request.headers={}".format(request.headers))
-    print("request.content_type={}".format(request.content_type))
-    print("request.headers['Content-Type']={}".format(request.headers['Content-Type']))
+    # print("request.headers={}".format(request.headers))
+    # print("request.content_type={}".format(request.content_type))
+    # print("request.headers['Content-Type']={}".format(request.headers['Content-Type']))
     # header = response.headers
     # header['Access-Control-Allow-Origin'] = '*'
     # header['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
@@ -59,8 +63,8 @@ def process():
 
     if (request.content_type.startswith('application/json')):
         print("OCR application/json Start......")
-        print("request={}".format(request))
-        print("request.data={}".format(request.data))
+        # print("request={}".format(request))
+        # print("request.data={}".format(request.data))
         document = Document()
         data_json = json.loads(request.data)
         print("data_json=",data_json)
@@ -71,21 +75,20 @@ def process():
         image = url_to_image(document.image_url)
         print("image size : ", image.shape)
         json_object = document.execute_ocr(image)
+        response = jsonify(json_object)
+        headers = {'Access-Control-Allow-Origin': '*'}
         response = make_response(
             jsonify(json_object),
             200,
+            headers
         )
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS, HEAD, GET, POST, DELETE, PUT'
-        response.headers['Content-Type'] = "application/json"
         return response
 
     elif (request.content_type.startswith('multipart/form-data')):
         print("OCR multipart/form-data Start......")
-        print("request={}".format(request))
-        print("request.form={}".format(request.form))
-        print("request.files={}".format(request.files['file']))
+        # print("request={}".format(request))
+        # print("request.form={}".format(request.form))
+        # print("request.files={}".format(request.files['file']))
         document = Document()
         for key, value in request.form.items():
             print("data['{}']={}".format(key,value))
@@ -104,14 +107,19 @@ def process():
             print("image size : ", image.shape)
             # image = Image.open(image_file)
             json_object = document.execute_ocr(image)
+            # response = jsonify(json_object)
+            # response.headers.add('Access-Control-Allow-Origin', '*')
+            headers = {'Access-Control-Allow-Origin': '*'}
             response = make_response(
                 jsonify(json_object),
                 200,
+                headers
             )
-            response.headers['Access-Control-Allow-Origin'] = '*'
-            response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-            response.headers['Access-Control-Allow-Methods'] = 'OPTIONS, HEAD, GET, POST, DELETE, PUT'
-            response.headers['Content-Type'] = "application/json"
+
+            # print("response : [",response.data, "]")
+            # print("response.cross_origin_opener_policy : [",response.cross_origin_opener_policy, "]")
+            # print("response.access_control_allow_origin : [",response.access_control_allow_origin, "]")
+
             return response
 
     else:
