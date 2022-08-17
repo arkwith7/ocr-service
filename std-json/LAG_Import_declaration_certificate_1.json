@@ -1,5 +1,5 @@
 {
-    "LAG_Import_declaration_certificate_1": {
+    "LAG_수입신고필증_1": {
         "신고번호": "",
         "신고일": "",
         "운송주선인": "",
@@ -14,46 +14,69 @@
     },
     "meta": {
         "imageSize": {
-            "width": 940,
-            "height": 600
+            "width": 420,
+            "height": 540
         },
-        "domain": "drivers_license",
+        "domain": "LAG_Import_declaration_certificate1",
         "version": "v0.3.0",
-        "ocrToolName": "Tesseract",
+        "ocrToolName": "Easy OCR",
         "ocrTool": "4.1.1-rc2-25-g9707",
-        "language": "kor+eng",
+        "language": "ko, en",
         "annotations": [
             {
-                "label": "birthDate",
+                "label": "신고번호",
                 "text": "",
-                "boundingBox": [[350, 196],
-                                [491, 196],
-                                [491, 251],
-                                [350, 251]]
+                "boundingBox": [[38, 10], [290, 10], [290, 64], [38, 64]]
             },
             {
-                "label": "name",
+                "label": "신고일",
                 "text": "",
-                "boundingBox": [[350, 151],
-                                [494, 151],
-                                [494, 210],
-                                [350, 210]]
+                "boundingBox": [[330, 10], [550, 10], [550, 64], [330, 64]]
             },
             {
-                "label": "licenseNum",
+                "label": "운송주선인",
                 "text": "",
-                "boundingBox": [[351, 76],
-                                [894, 76],
-                                [894, 152],
-                                [351, 152]]
+                "boundingBox": [[36, 302], [660, 302], [660, 334], [36, 334]]
             },
             {
-                "label": "identificationNum",
+                "label": "무역거래처",
                 "text": "",
-                "boundingBox": [[782, 425],
-                                [884, 425],
-                                [884, 467],
-                                [782, 467]]
+                "boundingBox": [[36, 349], [660, 349], [660, 382], [36, 383]]
+            },
+            {
+                "label": "국내도착항",
+                "text": "",
+                "boundingBox": [[928, 248], [1190, 248], [1190, 306], [928, 306]]
+            },
+            {
+                "label": "적출국",
+                "text": "",
+                "boundingBox": [[951, 309], [1335, 309], [1335, 330], [951, 330]]
+            },
+            {
+                "label": "선기명",
+                "text": "",
+                "boundingBox": [[932, 342], [1340, 342], [1340, 372], [932, 372]]
+            },
+            {
+                "label": "품명",
+                "text": "",
+                "boundingBox": [[36, 464], [770, 464], [770, 492], [36, 492]]
+            },
+            {
+                "label": "거래품명",
+                "text": "",
+                "boundingBox": [[36, 483], [770, 483], [770, 516], [36, 516]]
+            },
+            {
+                "label": "원산지",
+                "text": "",
+                "boundingBox": [[910, 796], [1038, 796], [1038, 820], [910, 820]]
+            },
+            {
+                "label": "결제금액",
+                "text": "",
+                "boundingBox": [[590, 1150], [1045, 1150], [1045, 1174], [590, 1174]]
             }
         ]
 }

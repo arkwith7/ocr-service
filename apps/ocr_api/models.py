@@ -249,120 +249,313 @@ def recognize_import_doc_text(image, json_file):
     language = json_object['meta']['language']
     langs = ['ko', 'en']
     reader = Reader(lang_list=langs, gpu=False)
-    # 인식대상 문자가 포함된 잘라낸 이미지 list 객체의 이미지를 하나씩 OCR 엔진을 이용 인식한 문자 정보를 되돌려 받는다.
-    # 인식된 문자를 JSON에 입력한다.
-    for cnt, text_img in enumerate(text_image_list, 1):
-        # OCR 엔진에 입력으로 줄 이미지 크기를 2배 확대 한다.
-        # Tesseract OCR 엔진으로 부터 인식된 문자를 되돌려 받는다.
-        # result = pytesseract.image_to_string(text_img, lang=language, config=custom_config)
-        simple_results = reader.readtext(text_img, detail = 0, paragraph=True)
-        result = ""
-        if len(simple_results) > 1:
-            for text in simple_results:
-                result += text + " "
-        elif len(simple_results) == 1:
-            result = simple_results[0]
-        else:
-            result = ""
-        clear_text = cleanText(result)
-        text_box = bboxes[cnt-1].astype(int)
-        if cnt == 1:
-            # 1.등록번호(사업자번호)
-            import_dc_num = re.sub('[^A-Za-z0-9-]', '', clear_text)
-            import_dc_num = clear_text.replace(' ', '')
-            import_dc_num = import_dc_num.replace('신고번호', '')   
-            json_object['ORG_수입신고필증']['신고번호'] = import_dc_num
-            json_object['meta']['annotations'][cnt-1]['text'] = import_dc_num
 
-        elif cnt == 2:
-            # 2.신고일
-            report_date = re.sub('[^0-9/]', '', clear_text) 
-            report_date = report_date.replace('신고일', '')
-            report_date = report_date.strip()
-            json_object['ORG_수입신고필증']['신고일'] = report_date
-            json_object['meta']['annotations'][cnt-1]['text'] = report_date
-        elif cnt == 3:
-            # 3.수입자
-            importer = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
-            importer = importer.replace('수입자', '') # 수 입 자
-            importer = importer.replace('수 입 자', '') # 수 입 자
-            importer = importer.strip()
-            json_object['ORG_수입신고필증']['수입자'] = importer
-            json_object['meta']['annotations'][cnt-1]['text'] = importer
-        elif cnt == 4:
-            # 4.운송주선인
-            forwarder = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
-            forwarder = forwarder.replace('운송주선인', '')
-            forwarder = forwarder.replace('운송주 선인', '')
-            forwarder = forwarder.strip()
-            json_object['ORG_수입신고필증']['운송주선인'] = forwarder
-            json_object['meta']['annotations'][cnt-1]['text'] = forwarder
-        elif cnt == 5:
-            # 5.무역거래처
-            trading_partner = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
-            trading_partner = trading_partner.replace('무역 거래 처', '')
-            trading_partner = trading_partner.replace('무역거래처', '')
-            trading_partner = trading_partner.strip()
-            json_object['ORG_수입신고필증']['무역거래처'] = trading_partner
-            json_object['meta']['annotations'][cnt-1]['text'] = trading_partner
-        elif cnt == 6:
-            # 6.국내도착항
-            arrival_port = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
-            arrival_port = arrival_port.replace('국내도착항', '')
-            arrival_port = arrival_port.strip()
-            json_object['ORG_수입신고필증']['국내도착항'] = arrival_port
-            json_object['meta']['annotations'][cnt-1]['text'] = arrival_port
-        elif cnt == 7:
-            # 7.적출국
-            origin = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
-            origin = origin.replace('적출국', '') # 적0국
-            origin = origin.replace('적0국', '') # 적0국
-            origin = origin.strip()
-            json_object['ORG_수입신고필증']['적출국'] = origin
-            json_object['meta']['annotations'][cnt-1]['text'] = origin
-        elif cnt == 8:
-            # 8.선기명
-            previous_port = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
-            previous_port = previous_port.replace('선기명', '') 
-            previous_port = previous_port.strip()
-            json_object['ORG_수입신고필증']['선기명'] = previous_port
-            json_object['meta']['annotations'][cnt-1]['text'] = previous_port
-        elif cnt == 9:
-            # 9.품명
-            product_name = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
-            product_name = product_name.replace('품 명', '')
-            product_name = product_name.strip()
-            json_object['ORG_수입신고필증']['품명'] = product_name
-            json_object['meta']['annotations'][cnt-1]['text'] = product_name
-        elif cnt == 10:
-            # 10.거래품명
-            trade_item = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
-            trade_item = trade_item.replace('거래품명', '')
-            trade_item = trade_item.strip()
-            json_object['ORG_수입신고필증']['거래품명'] = trade_item
-            json_object['meta']['annotations'][cnt-1]['text'] = trade_item
-        elif cnt == 11:
-            # 9.세부번호
-            detail_num = re.sub('[^0-9-]', '', clear_text)
-            detail_num = clear_text.replace(' ', '')
-            json_object['ORG_수입신고필증']['세부번호'] = detail_num
-            json_object['meta']['annotations'][cnt-1]['text'] = detail_num
-        elif cnt == 12:
-            # 10.원산지
-            origin = re.sub('[^A-Za-z가-힣-]', '', clear_text)
-            origin = origin.replace('원산지', '')
-            origin = origin.strip()
-            json_object['ORG_수입신고필증']['원산지'] = origin
-            json_object['meta']['annotations'][cnt-1]['text'] = origin
-        elif cnt == 13:
-            # 10.결제금액
-            payment_amount = re.sub('[^A-Za-z0-9,-]', '', clear_text)
-            payment_amount = clear_text.replace(' ', '')
-            json_object['ORG_수입신고필증']['결제금액'] = payment_amount
-            json_object['meta']['annotations'][cnt-1]['text'] = payment_amount
-        else:
-            # Do the defau
-            print("번호[{}]={}, ".format(cnt,cleanText),text_box)
+    if json_object['meta']['domain'] == 'Import_declaration_certificate':
+        # 인식대상 문자가 포함된 잘라낸 이미지 list 객체의 이미지를 하나씩 OCR 엔진을 이용 인식한 문자 정보를 되돌려 받는다.
+        # 인식된 문자를 JSON에 입력한다.
+        for cnt, text_img in enumerate(text_image_list, 1):
+            # OCR 엔진에 입력으로 줄 이미지 크기를 2배 확대 한다.
+            # Tesseract OCR 엔진으로 부터 인식된 문자를 되돌려 받는다.
+            # result = pytesseract.image_to_string(text_img, lang=language, config=custom_config)
+            simple_results = reader.readtext(text_img, detail = 0, paragraph=True)
+            result = ""
+            if len(simple_results) > 1:
+                for text in simple_results:
+                    result += text + " "
+            elif len(simple_results) == 1:
+                result = simple_results[0]
+            else:
+                result = ""
+            clear_text = cleanText(result)
+            text_box = bboxes[cnt-1].astype(int)
+            if cnt == 1:
+                # 1.등록번호(사업자번호)
+                import_dc_num = re.sub('[^A-Za-z0-9-]', '', clear_text)
+                import_dc_num = clear_text.replace(' ', '')
+                import_dc_num = import_dc_num.replace('신고번호', '')   
+                json_object['ORG_수입신고필증']['신고번호'] = import_dc_num
+                json_object['meta']['annotations'][cnt-1]['text'] = import_dc_num
+
+            elif cnt == 2:
+                # 2.신고일
+                report_date = re.sub('[^0-9/]', '', clear_text) 
+                report_date = report_date.replace('신고일', '')
+                report_date = report_date.strip()
+                json_object['ORG_수입신고필증']['신고일'] = report_date
+                json_object['meta']['annotations'][cnt-1]['text'] = report_date
+            elif cnt == 3:
+                # 3.수입자
+                importer = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+                importer = importer.replace('수입자', '') # 수 입 자
+                importer = importer.replace('수 입 자', '') # 수 입 자
+                importer = importer.strip()
+                json_object['ORG_수입신고필증']['수입자'] = importer
+                json_object['meta']['annotations'][cnt-1]['text'] = importer
+            elif cnt == 4:
+                # 4.운송주선인
+                forwarder = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+                forwarder = forwarder.replace('운송주선인', '')
+                forwarder = forwarder.replace('운송주 선인', '')
+                forwarder = forwarder.strip()
+                json_object['ORG_수입신고필증']['운송주선인'] = forwarder
+                json_object['meta']['annotations'][cnt-1]['text'] = forwarder
+            elif cnt == 5:
+                # 5.무역거래처
+                trading_partner = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+                trading_partner = trading_partner.replace('무역 거래 처', '')
+                trading_partner = trading_partner.replace('무역거래처', '')
+                trading_partner = trading_partner.strip()
+                json_object['ORG_수입신고필증']['무역거래처'] = trading_partner
+                json_object['meta']['annotations'][cnt-1]['text'] = trading_partner
+            elif cnt == 6:
+                # 6.국내도착항
+                arrival_port = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+                arrival_port = arrival_port.replace('국내도착항', '')
+                arrival_port = arrival_port.strip()
+                json_object['ORG_수입신고필증']['국내도착항'] = arrival_port
+                json_object['meta']['annotations'][cnt-1]['text'] = arrival_port
+            elif cnt == 7:
+                # 7.적출국
+                origin = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+                origin = origin.replace('적출국', '') # 적0국
+                origin = origin.replace('적0국', '') # 적0국
+                origin = origin.strip()
+                json_object['ORG_수입신고필증']['적출국'] = origin
+                json_object['meta']['annotations'][cnt-1]['text'] = origin
+            elif cnt == 8:
+                # 8.선기명
+                previous_port = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+                previous_port = previous_port.replace('선기명', '') 
+                previous_port = previous_port.strip()
+                json_object['ORG_수입신고필증']['선기명'] = previous_port
+                json_object['meta']['annotations'][cnt-1]['text'] = previous_port
+            elif cnt == 9:
+                # 9.품명
+                product_name = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+                product_name = product_name.replace('품 명', '')
+                product_name = product_name.strip()
+                json_object['ORG_수입신고필증']['품명'] = product_name
+                json_object['meta']['annotations'][cnt-1]['text'] = product_name
+            elif cnt == 10:
+                # 10.거래품명
+                trade_item = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+                trade_item = trade_item.replace('거래품명', '')
+                trade_item = trade_item.strip()
+                json_object['ORG_수입신고필증']['거래품명'] = trade_item
+                json_object['meta']['annotations'][cnt-1]['text'] = trade_item
+            elif cnt == 11:
+                # 9.세부번호
+                detail_num = re.sub('[^0-9-]', '', clear_text)
+                detail_num = clear_text.replace(' ', '')
+                json_object['ORG_수입신고필증']['세부번호'] = detail_num
+                json_object['meta']['annotations'][cnt-1]['text'] = detail_num
+            elif cnt == 12:
+                # 10.원산지
+                origin = re.sub('[^A-Za-z가-힣-]', '', clear_text)
+                origin = origin.replace('원산지', '')
+                origin = origin.strip()
+                json_object['ORG_수입신고필증']['원산지'] = origin
+                json_object['meta']['annotations'][cnt-1]['text'] = origin
+            elif cnt == 13:
+                # 10.결제금액
+                payment_amount = re.sub('[^A-Za-z0-9,-]', '', clear_text)
+                payment_amount = clear_text.replace(' ', '')
+                json_object['ORG_수입신고필증']['결제금액'] = payment_amount
+                json_object['meta']['annotations'][cnt-1]['text'] = payment_amount
+            else:
+                # Do the defau
+                print("번호[{}]={}, ".format(cnt,cleanText),text_box)
+    elif json_object['meta']['domain'] == 'LAG_Import_declaration_certificate1':
+        # 인식대상 문자가 포함된 잘라낸 이미지 list 객체의 이미지를 하나씩 OCR 엔진을 이용 인식한 문자 정보를 되돌려 받는다.
+        # 인식된 문자를 JSON에 입력한다.
+        for cnt, text_img in enumerate(text_image_list, 1):
+            # OCR 엔진에 입력으로 줄 이미지 크기를 2배 확대 한다.
+            # Tesseract OCR 엔진으로 부터 인식된 문자를 되돌려 받는다.
+            # result = pytesseract.image_to_string(text_img, lang=language, config=custom_config)
+            simple_results = reader.readtext(text_img, detail = 0, paragraph=True)
+            result = ""
+            if len(simple_results) > 1:
+                for text in simple_results:
+                    result += text + " "
+            elif len(simple_results) == 1:
+                result = simple_results[0]
+            else:
+                result = ""
+            clear_text = cleanText(result)
+            text_box = bboxes[cnt-1].astype(int)
+            if cnt == 1:
+                # 1.신고번호
+                import_dc_num = re.sub('[^A-Za-z0-9-]', '', clear_text)
+                import_dc_num = clear_text.replace(' ', '')
+                import_dc_num = import_dc_num.replace('신고번호', '')   
+                json_object['LAG_수입신고필증_1']['신고번호'] = import_dc_num
+                json_object['meta']['annotations'][cnt-1]['text'] = import_dc_num
+
+            elif cnt == 2:
+                # 2.신고일
+                report_date = re.sub('[^0-9/]', '', clear_text) 
+                report_date = report_date.replace('신고일', '')
+                report_date = report_date.strip()
+                json_object['LAG_수입신고필증_1']['신고일'] = report_date
+                json_object['meta']['annotations'][cnt-1]['text'] = report_date
+            elif cnt == 3:
+                # 4.운송주선인
+                forwarder = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+                forwarder = forwarder.replace('운송주선인', '')
+                forwarder = forwarder.replace('운송주 선인', '')
+                forwarder = forwarder.strip()
+                json_object['LAG_수입신고필증_1']['운송주선인'] = forwarder
+                json_object['meta']['annotations'][cnt-1]['text'] = forwarder
+            elif cnt == 4:
+                # 5.무역거래처
+                trading_partner = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+                trading_partner = trading_partner.replace('무역 거래 처', '')
+                trading_partner = trading_partner.replace('무역거래처', '')
+                trading_partner = trading_partner.strip()
+                json_object['LAG_수입신고필증_1']['무역거래처'] = trading_partner
+                json_object['meta']['annotations'][cnt-1]['text'] = trading_partner
+            elif cnt == 5:
+                # 6.국내도착항
+                arrival_port = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+                arrival_port = arrival_port.replace('국내도착항', '')
+                arrival_port = arrival_port.strip()
+                json_object['LAG_수입신고필증_1']['국내도착항'] = arrival_port
+                json_object['meta']['annotations'][cnt-1]['text'] = arrival_port
+            elif cnt == 6:
+                # 7.적출국
+                origin = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+                origin = origin.replace('적출국', '') # 적0국
+                origin = origin.replace('적0국', '') # 적0국
+                origin = origin.strip()
+                json_object['LAG_수입신고필증_1']['적출국'] = origin
+                json_object['meta']['annotations'][cnt-1]['text'] = origin
+            elif cnt == 7:
+                # 8.선기명
+                previous_port = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+                previous_port = previous_port.replace('선기명', '') 
+                previous_port = previous_port.strip()
+                json_object['LAG_수입신고필증_1']['선기명'] = previous_port
+                json_object['meta']['annotations'][cnt-1]['text'] = previous_port
+            elif cnt == 8:
+                # 9.품명
+                product_name = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+                product_name = product_name.replace('품 명', '')
+                product_name = product_name.strip()
+                json_object['LAG_수입신고필증_1']['품명'] = product_name
+                json_object['meta']['annotations'][cnt-1]['text'] = product_name
+            elif cnt == 9:
+                # 10.거래품명
+                trade_item = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+                trade_item = trade_item.replace('거래품명', '')
+                trade_item = trade_item.strip()
+                json_object['LAG_수입신고필증_1']['거래품명'] = trade_item
+                json_object['meta']['annotations'][cnt-1]['text'] = trade_item
+            elif cnt == 11:
+                # 10.원산지
+                origin = re.sub('[^A-Za-z가-힣-]', '', clear_text)
+                origin = origin.replace('원산지', '')
+                origin = origin.strip()
+                json_object['LAG_수입신고필증_1']['원산지'] = origin
+                json_object['meta']['annotations'][cnt-1]['text'] = origin
+            elif cnt == 12:
+                # 10.결제금액
+                payment_amount = re.sub('[^A-Za-z0-9,-]', '', clear_text)
+                payment_amount = clear_text.replace(' ', '')
+                json_object['LAG_수입신고필증_1']['결제금액'] = payment_amount
+                json_object['meta']['annotations'][cnt-1]['text'] = payment_amount
+            else:
+                # Do the defau
+                print("번호[{}]={}, ".format(cnt,cleanText),text_box)
+    elif json_object['meta']['domain'] == 'LAG_Import_declaration_certificate2':
+        for cnt, text_img in enumerate(text_image_list, 1):
+            # OCR 엔진에 입력으로 줄 이미지 크기를 2배 확대 한다.
+            # Tesseract OCR 엔진으로 부터 인식된 문자를 되돌려 받는다.
+            # result = pytesseract.image_to_string(text_img, lang=language, config=custom_config)
+            simple_results = reader.readtext(text_img, detail = 0, paragraph=True)
+            result = ""
+            if len(simple_results) > 1:
+                for text in simple_results:
+                    result += text + " "
+            elif len(simple_results) == 1:
+                result = simple_results[0]
+            else:
+                result = ""
+            clear_text = cleanText(result)
+            text_box = bboxes[cnt-1].astype(int)
+            if cnt == 1:
+                # 1.신고번호
+                import_dc_num = re.sub('[^A-Za-z0-9-]', '', clear_text)
+                import_dc_num = clear_text.replace(' ', '')
+                import_dc_num = import_dc_num.replace('신고번호', '')   
+                json_object['LAG_수입신고필증_2']['신고번호'] = import_dc_num
+                json_object['meta']['annotations'][cnt-1]['text'] = import_dc_num
+            elif cnt == 2:
+                # 9.품명
+                product_name = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+                product_name = product_name.replace('품 명', '')
+                product_name = product_name.strip()
+                json_object['LAG_수입신고필증_2']['품명'] = product_name
+                json_object['meta']['annotations'][cnt-1]['text'] = product_name
+            elif cnt == 3:
+                # 10.거래품명
+                trade_item = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+                trade_item = trade_item.replace('거래품명', '')
+                trade_item = trade_item.strip()
+                json_object['LAG_수입신고필증_2']['거래품명'] = trade_item
+                json_object['meta']['annotations'][cnt-1]['text'] = trade_item
+            else:
+                # Do the defau
+                print("번호[{}]={}, ".format(cnt,cleanText),text_box)
+    elif json_object['meta']['domain'] == 'LAG_Import_declaration_certificate3':
+        for cnt, text_img in enumerate(text_image_list, 1):
+            # OCR 엔진에 입력으로 줄 이미지 크기를 2배 확대 한다.
+            # Tesseract OCR 엔진으로 부터 인식된 문자를 되돌려 받는다.
+            # result = pytesseract.image_to_string(text_img, lang=language, config=custom_config)
+            simple_results = reader.readtext(text_img, detail = 0, paragraph=True)
+            result = ""
+            if len(simple_results) > 1:
+                for text in simple_results:
+                    result += text + " "
+            elif len(simple_results) == 1:
+                result = simple_results[0]
+            else:
+                result = ""
+            clear_text = cleanText(result)
+            text_box = bboxes[cnt-1].astype(int)
+            if cnt == 1:
+                # 1.신고번호
+                import_dc_num = re.sub('[^A-Za-z0-9-]', '', clear_text)
+                import_dc_num = clear_text.replace(' ', '')
+                import_dc_num = import_dc_num.replace('신고번호', '')   
+                json_object['LAG_수입신고필증_3']['신고번호'] = import_dc_num
+                json_object['meta']['annotations'][cnt-1]['text'] = import_dc_num
+            elif cnt == 2:
+                # 9.품명
+                product_name = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+                product_name = product_name.replace('품 명', '')
+                product_name = product_name.strip()
+                json_object['LAG_수입신고필증_3']['품명'] = product_name
+                json_object['meta']['annotations'][cnt-1]['text'] = product_name
+            elif cnt == 3:
+                # 10.거래품명
+                trade_item = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+                trade_item = trade_item.replace('거래품명', '')
+                trade_item = trade_item.strip()
+                json_object['LAG_수입신고필증_3']['거래품명'] = trade_item
+                json_object['meta']['annotations'][cnt-1]['text'] = trade_item
+            elif cnt == 4:
+                # 10.원산지
+                origin = re.sub('[^A-Za-z가-힣-]', '', clear_text)
+                origin = origin.replace('원산지', '')
+                origin = origin.strip()
+                json_object['LAG_수입신고필증_3']['원산지'] = origin
+                json_object['meta']['annotations'][cnt-1]['text'] = origin
+            else:
+                # Do the defau
+                print("번호[{}]={}, ".format(cnt,cleanText),text_box)
+        
+
+
 
     return bboxes, change_image, json_object
 
@@ -562,7 +755,27 @@ class Document(db.Model):
                 print("[INFO] import json_file exists....")
                 _, _, json_object = recognize_import_doc_text(img, json_file)
                 print('OCR Result: \n{0}\n'.format(json_object))
-
+        elif doc_class == "LAG_수입신고필증_1":
+            print("[INFO] OCR'ing import image...")
+            json_file = './std-json/LAG_Import_declaration_certificate_1.json'
+            if os.path.isfile(json_file):
+                print("[INFO] import json_file exists....")
+                _, _, json_object = recognize_import_doc_text(img, json_file)
+                print('OCR Result: \n{0}\n'.format(json_object))
+        elif doc_class == "LAG_수입신고필증_2":
+            print("[INFO] OCR'ing import image...")
+            json_file = './std-json/LAG_Import_declaration_certificate_2.json'
+            if os.path.isfile(json_file):
+                print("[INFO] import json_file exists....")
+                _, _, json_object = recognize_import_doc_text(img, json_file)
+                print('OCR Result: \n{0}\n'.format(json_object))
+        elif doc_class == "LAG_수입신고필증_3":
+            print("[INFO] OCR'ing import image...")
+            json_file = './std-json/LAG_Import_declaration_certificate_3.json'
+            if os.path.isfile(json_file):
+                print("[INFO] import json_file exists....")
+                _, _, json_object = recognize_import_doc_text(img, json_file)
+                print('OCR Result: \n{0}\n'.format(json_object))
 
         execution_time = time.time() - start_time
 
