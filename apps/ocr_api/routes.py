@@ -71,12 +71,11 @@ def process():
         print("image size : ", image.shape)
         json_object = document.execute_ocr(image)
         response = jsonify(json_object)
-        headers = {'Access-Control-Allow-Origin': '*'}
         response = make_response(
             jsonify(json_object),
-            200,
-            headers
+            200
         )
+        response.headers = {'Access-Control-Allow-Origin': '*'}
         return response
 
     elif (request.content_type.startswith('multipart/form-data')):
@@ -104,13 +103,11 @@ def process():
             json_object = document.execute_ocr(image)
             # response = jsonify(json_object)
             # response.headers.add('Access-Control-Allow-Origin', '*')
-            headers = {'Access-Control-Allow-Origin': '*'}
             response = make_response(
                 jsonify(json_object),
-                200,
-                headers
+                200
             )
-
+            response.headers = {'Access-Control-Allow-Origin': '*'}
             # print("response : [",response.data, "]")
             # print("response.cross_origin_opener_policy : [",response.cross_origin_opener_policy, "]")
             # print("response.access_control_allow_origin : [",response.access_control_allow_origin, "]")

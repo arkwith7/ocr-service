@@ -268,68 +268,98 @@ def recognize_import_doc_text(image, json_file):
         text_box = bboxes[cnt-1].astype(int)
         if cnt == 1:
             # 1.등록번호(사업자번호)
-#             identificationNum = re.sub('[^0-9가-힣]', '', clear_text)
-            identificationNum = clear_text.replace(' ', '')
-            json_object['ORG_수입신고필증']['신고번호'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            import_dc_num = re.sub('[^A-Za-z0-9-]', '', clear_text)
+            import_dc_num = clear_text.replace(' ', '')
+            import_dc_num = import_dc_num.replace('신고번호', '')   
+            json_object['ORG_수입신고필증']['신고번호'] = import_dc_num
+            json_object['meta']['annotations'][cnt-1]['text'] = import_dc_num
 
         elif cnt == 2:
-            # 2.법인명(단체명)
-            # hangul_name = re.sub('[^A-Za-z0-9가-힣]', '', string) 
-#             hangul_name = re.sub('[^A-Za-z0-9가-힣]', '', clear_text)   
-            json_object['ORG_수입신고필증']['신고일'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 2.신고일
+            report_date = re.sub('[^0-9/]', '', clear_text) 
+            report_date = report_date.replace('신고일', '')
+            report_date = report_date.strip()
+            json_object['ORG_수입신고필증']['신고일'] = report_date
+            json_object['meta']['annotations'][cnt-1]['text'] = report_date
         elif cnt == 3:
-            # 3.대표자
-#             representativeName = re.sub('[^A-Za-z가-힣]', '', clear_text)
-            json_object['ORG_수입신고필증']['수입자'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 3.수입자
+            importer = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+            importer = importer.replace('수입자', '') # 수 입 자
+            importer = importer.replace('수 입 자', '') # 수 입 자
+            importer = importer.strip()
+            json_object['ORG_수입신고필증']['수입자'] = importer
+            json_object['meta']['annotations'][cnt-1]['text'] = importer
         elif cnt == 4:
-            # 4.개업년월일
-            json_object['ORG_수입신고필증']['운송주선인'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 4.운송주선인
+            forwarder = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+            forwarder = forwarder.replace('운송주선인', '')
+            forwarder = forwarder.replace('운송주 선인', '')
+            forwarder = forwarder.strip()
+            json_object['ORG_수입신고필증']['운송주선인'] = forwarder
+            json_object['meta']['annotations'][cnt-1]['text'] = forwarder
         elif cnt == 5:
-            # 5.법인등록번호
-            json_object['ORG_수입신고필증']['무역거래처'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 5.무역거래처
+            trading_partner = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+            trading_partner = trading_partner.replace('무역 거래 처', '')
+            trading_partner = trading_partner.replace('무역거래처', '')
+            trading_partner = trading_partner.strip()
+            json_object['ORG_수입신고필증']['무역거래처'] = trading_partner
+            json_object['meta']['annotations'][cnt-1]['text'] = trading_partner
         elif cnt == 6:
-            # 6.사업장소재지
-#             location = re.sub('\n', '', clear_text)
-            json_object['ORG_수입신고필증']['국내도착항'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 6.국내도착항
+            arrival_port = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+            arrival_port = arrival_port.replace('국내도착항', '')
+            arrival_port = arrival_port.strip()
+            json_object['ORG_수입신고필증']['국내도착항'] = arrival_port
+            json_object['meta']['annotations'][cnt-1]['text'] = arrival_port
         elif cnt == 7:
-            # 7.본점소재지
-#             hqLocation = re.sub('}', '', clear_text)
-#             hqLocation = re.sub('\n', '', hqLocation)
-            json_object['ORG_수입신고필증']['적출국'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 7.적출국
+            origin = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+            origin = origin.replace('적출국', '') # 적0국
+            origin = origin.replace('적0국', '') # 적0국
+            origin = origin.strip()
+            json_object['ORG_수입신고필증']['적출국'] = origin
+            json_object['meta']['annotations'][cnt-1]['text'] = origin
         elif cnt == 8:
-            # 8.업태
-#             bizType = clear_text.split('\n')
-            json_object['ORG_수입신고필증']['선기명'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 8.선기명
+            previous_port = re.sub('[^A-Za-z0-9가-힣() ]', '', clear_text)
+            previous_port = previous_port.replace('선기명', '') 
+            previous_port = previous_port.strip()
+            json_object['ORG_수입신고필증']['선기명'] = previous_port
+            json_object['meta']['annotations'][cnt-1]['text'] = previous_port
         elif cnt == 9:
-            # 9.종목
-#             bizItem = clear_text.split('\n')
-            json_object['ORG_수입신고필증']['품명'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 9.품명
+            product_name = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+            product_name = product_name.replace('품 명', '')
+            product_name = product_name.strip()
+            json_object['ORG_수입신고필증']['품명'] = product_name
+            json_object['meta']['annotations'][cnt-1]['text'] = product_name
         elif cnt == 10:
-            # 10.사업자구분
-            json_object['ORG_수입신고필증']['거래품명'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 10.거래품명
+            trade_item = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+            trade_item = trade_item.replace('거래품명', '')
+            trade_item = trade_item.strip()
+            json_object['ORG_수입신고필증']['거래품명'] = trade_item
+            json_object['meta']['annotations'][cnt-1]['text'] = trade_item
         elif cnt == 11:
-            # 9.종목
-#             bizItem = clear_text.split('\n')
-            json_object['ORG_수입신고필증']['세부번호'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 9.세부번호
+            detail_num = re.sub('[^0-9-]', '', clear_text)
+            detail_num = clear_text.replace(' ', '')
+            json_object['ORG_수입신고필증']['세부번호'] = detail_num
+            json_object['meta']['annotations'][cnt-1]['text'] = detail_num
         elif cnt == 12:
-            # 10.사업자구분
-            json_object['ORG_수입신고필증']['원산지'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 10.원산지
+            origin = re.sub('[^A-Za-z가-힣-]', '', clear_text)
+            origin = origin.replace('원산지', '')
+            origin = origin.strip()
+            json_object['ORG_수입신고필증']['원산지'] = origin
+            json_object['meta']['annotations'][cnt-1]['text'] = origin
         elif cnt == 13:
-            # 10.사업자구분
-            json_object['ORG_수입신고필증']['결제금액'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 10.결제금액
+            payment_amount = re.sub('[^A-Za-z0-9,-]', '', clear_text)
+            payment_amount = clear_text.replace(' ', '')
+            json_object['ORG_수입신고필증']['결제금액'] = payment_amount
+            json_object['meta']['annotations'][cnt-1]['text'] = payment_amount
         else:
             # Do the defau
             print("번호[{}]={}, ".format(cnt,cleanText),text_box)
@@ -389,8 +419,12 @@ def recognize_export_doc_text(image, json_file):
     json_object['meta']['imageSize']['width'] = width
     
 
-    # EasyOCR 엔진 config 정보 편집. 언어는 ['ko', 'en']
+    # Tesseract OCR 엔진 config 정보 편집. 언어는 "kor+eng"
     language = json_object['meta']['language']
+    custom_config = r'--psm 6'
+    #  print(custom_config)
+    
+    # EasyOCR
     langs = ['ko', 'en']
     reader = Reader(lang_list=langs, gpu=False)
     # 인식대상 문자가 포함된 잘라낸 이미지 list 객체의 이미지를 하나씩 OCR 엔진을 이용 인식한 문자 정보를 되돌려 받는다.
@@ -408,59 +442,78 @@ def recognize_export_doc_text(image, json_file):
             result = simple_results[0]
         else:
             result = ""
+    
         clear_text = cleanText(result)
         text_box = bboxes[cnt-1].astype(int)
         if cnt == 1:
-            # 1.등록번호(사업자번호)
-#             identificationNum = re.sub('[^0-9가-힣]', '', clear_text)
-            identificationNum = clear_text.replace(' ', '')
-            json_object['ORG_수출신고필증']['신고번호'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 1.ORG_수출신고필증(신고번호)
+            export_dc_num = re.sub('[^A-Za-z0-9-]', '', clear_text)
+            export_dc_num = clear_text.replace(' ', '')
+            json_object['ORG_수출신고필증']['신고번호'] = export_dc_num
+            json_object['meta']['annotations'][cnt-1]['text'] = export_dc_num
 
         elif cnt == 2:
-            # 2.법인명(단체명)
-            # hangul_name = re.sub('[^A-Za-z0-9가-힣]', '', string) 
-#             hangul_name = re.sub('[^A-Za-z0-9가-힣]', '', clear_text)   
-            json_object['ORG_수출신고필증']['수출대행자'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 2.수출대행자
+            export_agent = re.sub('[^A-Za-z0-9가-힣]', '', clear_text) 
+            export_agent = export_agent.replace('수출대행자', '')   
+            json_object['ORG_수출신고필증']['수출대행자'] = export_agent
+            json_object['meta']['annotations'][cnt-1]['text'] = export_agent
         elif cnt == 3:
-            # 3.대표자
-#             representativeName = re.sub('[^A-Za-z가-힣]', '', clear_text)
-            json_object['ORG_수출신고필증']['목적국'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 3.목적국
+            target_nation = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+            target_nation = target_nation.replace('목적국', '')
+            target_nation = target_nation.strip()
+            json_object['ORG_수출신고필증']['목적국'] = target_nation
+            json_object['meta']['annotations'][cnt-1]['text'] = target_nation
         elif cnt == 4:
-            # 4.개업년월일
-            json_object['ORG_수출신고필증']['적재항'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 4.적재항
+            load_port = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+            load_port = load_port.replace('적재항', '')
+            load_port = load_port.replace('적재합', '')
+            load_port = load_port.replace('적재함', '')
+            load_port = load_port.strip()
+            json_object['ORG_수출신고필증']['적재항'] = load_port
+            json_object['meta']['annotations'][cnt-1]['text'] = load_port
         elif cnt == 5:
-            # 5.법인등록번호
-            json_object['ORG_수출신고필증']['구매자'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 5.구매자
+            buyer = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+            buyer = buyer.replace('구 매 자', '')
+            buyer = buyer.strip()
+            json_object['ORG_수출신고필증']['구매자'] = buyer
+            json_object['meta']['annotations'][cnt-1]['text'] = buyer
         elif cnt == 6:
-            # 6.사업장소재지
-#             location = re.sub('\n', '', clear_text)
-            json_object['ORG_수출신고필증']['품명'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 6.품 명
+            product_name = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+            product_name = product_name.replace('품 명', '')
+            product_name = product_name.strip()
+            json_object['ORG_수출신고필증']['품명'] = product_name
+            json_object['meta']['annotations'][cnt-1]['text'] = product_name
         elif cnt == 7:
-            # 7.본점소재지
-#             hqLocation = re.sub('}', '', clear_text)
-#             hqLocation = re.sub('\n', '', hqLocation)
-            json_object['ORG_수출신고필증']['거래품명'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 7.거래품명
+            trade_item = re.sub('[^A-Za-z가-힣 ]', '', clear_text)
+            trade_item = trade_item.replace('거래품명', '')
+            trade_item = trade_item.strip()
+            json_object['ORG_수출신고필증']['거래품명'] = trade_item
+            json_object['meta']['annotations'][cnt-1]['text'] = trade_item
         elif cnt == 8:
-            # 8.업태
-#             bizType = clear_text.split('\n')
-            json_object['ORG_수출신고필증']['세부번호'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 8.세부번호
+            detail_num = re.sub('[^0-9-]', '', clear_text)
+            detail_num = clear_text.replace(' ', '')
+            json_object['ORG_수출신고필증']['세부번호'] = detail_num
+            json_object['meta']['annotations'][cnt-1]['text'] = detail_num
         elif cnt == 9:
-            # 9.종목
-#             bizItem = clear_text.split('\n')
-            json_object['ORG_수출신고필증']['원산지'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 9.원산지
+            origin = re.sub('[^A-Za-z가-힣-]', '', clear_text)
+            origin = origin.replace('원산지', '')
+            origin = origin.strip()
+            json_object['ORG_수출신고필증']['원산지'] = origin
+            json_object['meta']['annotations'][cnt-1]['text'] = origin
         elif cnt == 10:
-            # 10.사업자구분
-            json_object['ORG_수출신고필증']['결제금액'] = clear_text
-            json_object['meta']['annotations'][cnt-1]['text'] = clear_text
+            # 10.결제금액
+            payment_amount = re.sub('[^A-Za-z0-9,-]', '', clear_text)
+            payment_amount = clear_text.replace(' ', '')
+            json_object['ORG_수출신고필증']['결제금액'] = payment_amount
+            json_object['meta']['annotations'][cnt-1]['text'] = payment_amount
         else:
             # Do the defau
             print("번호[{}]={}, ".format(cnt,cleanText),text_box)
