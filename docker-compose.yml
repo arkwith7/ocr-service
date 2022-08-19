@@ -1,26 +1,25 @@
 version: '3.8'
+
 services:
-  appseed-app:
-    container_name: ocrapi_app
-    restart: always
-    # image: "ocr-service_appseed-app:latest"
-    env_file: .env
-    build: .
-    networks:
-      - db_network
-      - web_network
-  nginx:
-    container_name: nginx
-    restart: always
-    image: "nginx:latest"
-    ports:
-      - "7080:5085"
+  web:
+    build: ./cocoa
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./nginx:/etc/nginx/conf.d
-    networks:
-      - web_network
-networks:
-  db_network:
-    driver: bridge
-  web_network:
-    driver: bridge
+      - ./cocoa/:/usr/src/app/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=hello_django
+      - POSTGRES_PASSWORD=hello_django
+      - POSTGRES_DB=hello_django_dev
+
+volumes:
+  postgres_data:
