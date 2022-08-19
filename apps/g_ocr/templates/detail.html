@@ -1,0 +1,87 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} General OCR Detail {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+<link rel="stylesheet" href="{{ ASSETS_ROOT }}/css/g_ocr/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10">General OCR</h5>
+                                </div>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/ocr/"><i class="feather icon-home"></i></a></li>
+                                    <li class="breadcrumb-item"><a href="#!">General OCR</a></li>
+                                    <li class="breadcrumb-item"><a href="#!">Extract Data</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ breadcrumb ] end -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                            </div>
+                            <!-- [ tooltip ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>OCR 대상 이미지팔일</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <img src="/static/media/{{data.image}}" alt="Uploaded Image" width="600px"
+                                            style="margin: auto; border-radius: 10px; margin-bottom: 8px" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>OCR 결과</h5>
+                                        <button class="btn btn-primary float-end"><i class="fas fa-list-ul m-r-5"></i><a href="/ocr/general_ocr/" style="color: white">목록</a></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <textarea class="form-control" id="exampleTextarea"
+                                            rows="20">{{data.ocr_text}}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ tooltip ] end -->
+                        </div>
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ Main Content ] end -->
+
+
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% endblock javascripts %}

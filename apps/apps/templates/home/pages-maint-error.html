@@ -1,0 +1,29 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{% block title %} Auth {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}	
+
+<div class="auth-wrapper">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="text-center">
+                    <img src="{{ ASSETS_ROOT }}/images/error/404.png" alt="" class="img-fluid">
+                    <h5 class="text-muted my-4">Oops! Page not found!</h5>
+                    <form action="/">
+                        <button class="btn  btn-primary mb-4"><i class="feather icon-refresh-ccw me-2"></i>Reload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %} {% endblock javascripts %}

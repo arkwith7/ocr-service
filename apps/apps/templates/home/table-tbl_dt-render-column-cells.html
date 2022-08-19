@@ -1,0 +1,168 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Tables DT Render Column Cells {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="{{ ASSETS_ROOT }}/css/plugins/style.css">
+
+{% endblock stylesheets %}
+
+{% block content %}	
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10">Render Column Cells</h5>
+                                </div>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/"><i
+                                                class="feather icon-home"></i></a></li>
+                                    <li class="breadcrumb-item"><a href="#!">Table</a></li>
+                                    <li class="breadcrumb-item"><a href="#!">Render Column Cells</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ breadcrumb ] end -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <!-- [ basic-table ] start -->
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Basic Table</h5>
+                                        <span class="d-block m-t-5">use class <code>table</code> inside table
+                                            element</span>
+                                    </div>
+                                    <div class="card-block table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table" id="pc-dt-render-column-cells">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ basic-table ] end -->
+                        </div>
+                        <!-- [ Main Content ] end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="{{ ASSETS_ROOT }}/js/plugins/simple-datatables.js"></script>
+<script>
+    const data = {
+        headings: ['ID', 'Drink', 'Price', 'Caffeinated', 'Profit'],
+        data: [
+            [574, 'latte', 4.00, false, 0.00],
+            [984, 'herbal tea', 3.00, false, 0.56],
+            [312, 'green tea', 3.00, true, 1.72],
+            [312, 'latte', 3.00, true, -1.21],
+            [312, 'green tea', 3.00, false, 0.00],
+            [312, 'green tea', 3.00, false, 0.00],
+            [312, 'green tea', 3.00, true, 1.72],
+            [312, 'latte', 3.00, true, 1.72],
+            [312, 'green tea', 3.00, true, -1.21],
+            [312, 'green tea', 3.00, false, 0.00],
+            [312, 'green tea', 3.00, true, 1.72],
+            [312, 'green tea', 3.00, true, 1.72],
+            [312, 'latte', 3.00, false, 0.00],
+            [312, 'latte', 3.00, true, 1.72],
+            [312, 'green tea', 3.00, false, 0.00],
+            [312, 'green tea', 3.00, true, 1.72],
+            [312, 'latte', 3.00, false, 0.00],
+            [312, 'latte', 3.00, true, -1.21],
+            [312, 'latte', 3.00, true, 1.72],
+            [312, 'latte', 3.00, false, 0.00],
+            [312, 'latte', 3.00, false, 0.00],
+            [312, 'latte', 3.00, true, 1.72],
+            [312, 'green tea', 3.00, true, -1.21],
+            [312, 'green tea', 3.00, true, -1.21],
+            [312, 'green tea', 3.00, true, -1.21],
+        ]
+    };
+
+    // Add Icon
+    function renderIcon(data, cell, row) {
+        if (data == 'latte') {
+            return `🔥 ${data}`;
+        } else {
+            return `🌿 ${data}`;
+        }
+    }
+
+    // Price column cell manipulation
+    function renderButton(data, cell, row) {
+        return `${data}<button class="btn btn-success btn-sm ms-3" data-row="${row.dataIndex}">Buy Now</button>`;
+    }
+
+    // Caffeinated column cell manipulation
+    function renderYesNo(data, cell, row) {
+        if (data == 'true') {
+            return row.classList.add("text-success"), `<b>Yes</b>`;
+        } else if (data == 'false') {
+            return row.classList.add("text-danger"), `<b>No</b>`;
+        }
+    }
+
+    // numbers
+    function renderHighLow(data, cell, row) {
+        if (data < 0) {
+            return `<span class="text-danger">${data}</span>`;
+        } else if (data > 0) {
+            return `<span class="text-success">${data}</span>`;
+        } else if (data == 0) {
+            return `<span class="text-body">${data}</span>`;
+        }
+    }
+
+    var dataTable = new simpleDatatables.DataTable("#pc-dt-render-column-cells", {
+        data: data,
+        perPage: 25,
+        columns: [{
+                select: 0,
+                hidden: true
+            },
+            {
+                select: 1,
+                render: renderIcon
+            },
+            {
+                select: 2,
+                render: renderButton
+            },
+            {
+                select: 3,
+                render: renderYesNo
+            },
+            {
+                select: 4,
+                render: renderHighLow
+            }
+        ]
+    });
+</script>
+
+{% endblock javascripts %}

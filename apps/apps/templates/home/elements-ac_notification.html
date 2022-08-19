@@ -1,0 +1,127 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Elements Notifs {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+<link rel="stylesheet" href="{{ ASSETS_ROOT }}/css/plugins/notifier.css">
+
+{% endblock stylesheets %}
+
+{% block content %}	
+
+<!-- [ Main Content ] start -->
+<section class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10">Notification</h5>
+                                </div>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/"><i
+                                                class="feather icon-home"></i></a></li>
+                                    <li class="breadcrumb-item"><a href="#!">Advance Components</a></li>
+                                    <li class="breadcrumb-item"><a href="#!">Notification</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ breadcrumb ] end -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="alert alert-primary" role="alert">
+                                    <p>Use our extra helper file for quick setup Advance Components in your page - <a
+                                            href="index-ac-package.html" target="_blank" class="alert-link">CHECKOUT</a>
+                                    </p>
+                                    <label class="text-muted">Copy/paste source code in your page in just couples of
+                                        seconds.</label>
+                                </div>
+                            </div>
+                            <!-- [ notification-alert ] start -->
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Notification Alert</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <button type="button" class="btn btn-primary" id="btn-default">Default</button>
+                                        <button type="button" class="btn btn-info" id="btn-info">Info</button>
+                                        <button type="button" class="btn btn-success" id="btn-success">Success</button>
+                                        <button type="button" class="btn btn-warning" id="btn-warning">Warning</button>
+                                        <button type="button" class="btn btn-danger" id="btn-danger">Danger</button>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Notification with Icons</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <button type="button" class="btn btn-primary"
+                                            id="btn-default-i">Default</button>
+                                        <button type="button" class="btn btn-info" id="btn-info-i">Info</button>
+                                        <button type="button" class="btn btn-success"
+                                            id="btn-success-i">Success</button>
+                                        <button type="button" class="btn btn-warning"
+                                            id="btn-warning-i">Warning</button>
+                                        <button type="button" class="btn btn-danger" id="btn-danger-i">Danger</button>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Auto Close Notifications</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <button type="button" class="btn btn-primary"
+                                            id="btn-default-ac">Default</button>
+                                        <button type="button" class="btn btn-info" id="btn-info-ac">Info</button>
+                                        <button type="button" class="btn btn-success"
+                                            id="btn-success-ac">Success</button>
+                                        <button type="button" class="btn btn-warning"
+                                            id="btn-warning-ac">Warning</button>
+                                        <button type="button" class="btn btn-danger" id="btn-danger-ac">Danger</button>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Using the notification.hide() method</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <button type="button" class="btn btn-primary" id="btn-nt-show">Show
+                                            Notification</button>
+                                        <button type="button" class="btn btn-danger" id="btn-nt-hide">Hide
+                                            Notification</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ notification-alert ] end -->
+                        </div>
+                        <!-- [ Main Content ] end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<!-- notification Js -->
+<script src="{{ ASSETS_ROOT }}/js/plugins/notifier.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/pages/ac-notification.js"></script>
+
+{% endblock javascripts %}

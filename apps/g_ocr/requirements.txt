@@ -1,0 +1,11 @@
+Django==1.11.29
+django-widget-tweaks
+ujson
+opencv-contrib-python
+pybase64 # for import base64
+Pillow
+imutils
+pytesseract
+pylint
+pytz==2018.9
+autopep8

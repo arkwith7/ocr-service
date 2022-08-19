@@ -60,9 +60,12 @@ logs/*
 # Project stuff:
 HVLFTP/*
 
-# Flask stuff:
-instance/
-.webassets-cache
+# media file
+media/*
+apps/staticfiles/
+apps/apps/static/media/OCR_image/input/
+apps/apps/static/media/
+
 
 # Scrapy stuff:
 .scrapy

@@ -1,0 +1,110 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} General OCR Integrate {% endblock %}
+
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10">General OCR</h5>
+                                </div>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/ocr/"><i class="feather icon-home"></i></a>
+                                    </li>
+                                    <li class="breadcrumb-item"><a href="#!">General OCR</a></li>
+                                    <li class="breadcrumb-item"><a href="#!">Integrate</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ breadcrumb ] end -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <!-- [ tabs ] start -->
+                            <div class="col-sm-12">
+                                <h5>Integration Guide</h5>
+                                <hr>
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active text-uppercase" id="home-tab" data-bs-toggle="tab"
+                                            href="#home" role="tab" aria-controls="home" aria-selected="true">Code for Url</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-uppercase" id="profile-tab" data-bs-toggle="tab"
+                                            href="#profile" role="tab" aria-controls="profile"
+                                            aria-selected="false">Code for File</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-uppercase" id="contact-tab" data-bs-toggle="tab"
+                                            href="#contact" role="tab" aria-controls="contact"
+                                            aria-selected="false">Docker Integration</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                        <p class="mb-0">
+                                            <pre>
+<code class="language-python">
+    var data = 'urls=https://goo.gl/ICoiHc';
+
+    var xhr = new XMLHttpRequest();
+    
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === this.DONE) {
+            console.log(this.responseText);
+        }
+    });
+    
+    xhr.open("POST", "https://app.minerva.com/api/v2/OCR/Model/49ee82b5-f969-4b5a-adfc-ecb267b8207a/LabelUrls/?async=false");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.setRequestHeader("authorization", "Basic " + btoa("TlzstaxLRtN52c7cohHtKOGQ1PksEP_D:"));
+    
+    xhr.send(data);
+</code>
+                                            </pre>
+                                        </p>
+                                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                            <p class="mb-0">
+                                                Code for File
+                                            </p>
+                                        </div>
+                                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                            <p class="mb-0">
+                                                Docker Integration
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- [ tabs ] end -->
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+    {% endblock content %}
+
+    <!-- Specific Page JS goes HERE  -->
+    {% block javascripts %}{% endblock javascripts %}

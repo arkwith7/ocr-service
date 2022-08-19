@@ -1,0 +1,108 @@
+{
+    "license": {
+        "identificationNum": "228-82-05068",
+        "companyName": "사단법인 한국아이티",
+        "representativeName": "구송중",
+        "establishmentDate": "2018 년 02 월 05 일",
+        "regNum": "124621-0022732",
+        "location": "서울특별시 송파구 중대로 105, 2732호(가락동, 가락아이디타\n워)",
+        "hqLocation": "서울특별시 송파구 중대로 105, 2732호(가락동, 가락아이디타\n워)",
+        "bizType": "서비스",
+        "bizItem": "IT연구용역제공",
+        "taxpayerType": "법인사업자본점",
+        "bizNumValidate": ""
+    },
+    "meta": {
+        "imageSize": {
+            "width": 2175,
+            "height": 1870
+        },
+        "domain": "business_registration",
+        "version": "v0.3.0",
+        "ocrToolName": "Tesseract",
+        "ocrTool": "4.1.1-rc2-25-g9707",
+        "language": "kor+eng",
+        "annotations": [
+            {
+                "label": "identificationNum",
+                "text": "228-82-05068",
+                "boundingBox": [[804,  405],
+                                [1120,  405],
+                                [1120,  460],
+                                [804,  460]]
+            },
+            {
+                "label": "companyName",
+                "text": "사단법인 한국아이티",
+                "boundingBox": [[478, 485],
+                                [896,  485],
+                                [896,  531],
+                                [478, 531]]
+            },
+            {
+                "label": "representativeName",
+                "text": "구송중",
+                "boundingBox": [[478, 544],
+                                [896, 544],
+                                [896, 585],
+                                [478, 585]]
+            },
+            {
+                "label": "establishmentDate",
+                "text": "2018 년 02 월 05 일",
+                "boundingBox": [[ 478, 665],
+                                [828, 665],
+                                [828, 702],
+                                [ 478, 702]]
+            },
+            {
+                "label": "regNum",
+                "text": "124621-0022732",
+                "boundingBox": [[1202, 665],
+                                [1524, 665],
+                                [1524, 702],
+                                [1202, 702]]
+            },
+            {
+                "label": "location",
+                "text": "서울특별시 송파구 중대로 105, 2732호(가락동, 가락아이디타\n워)",
+                "boundingBox": [[478, 720],
+                                [1524, 720],
+                                [1524, 808],
+                                [478, 808]]
+            },
+            {
+                "label": "hqLocation",
+                "text": "서울특별시 송파구 중대로 105, 2732호(가락동, 가락아이디타\n워)",
+                "boundingBox": [[478, 826],
+                                [1524, 826],
+                                [1524, 918],
+                                [478, 918]]
+            },
+            {
+                "label": "bizType",
+                "text": "서비스",
+                "boundingBox": [[577, 939],
+                                [860, 939],
+                                [860, 1067],
+                                [577, 1067]]
+            },
+            {
+                "label": "bizItem",
+                "text": "IT연구용역제공",
+                "boundingBox": [[1060, 939],
+                                [1524, 939],
+                                [1524, 1067],
+                                [1060, 1067]]
+            },
+            {
+                "label": "taxpayerType",
+                "text": "법인사업자본점",
+                "boundingBox": [[684, 322],
+                                [965, 322],
+                                [965, 382],
+                                [684, 382]]
+            }
+        ]
+    }
+}

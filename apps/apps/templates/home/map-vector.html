@@ -1,0 +1,204 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Maps Location {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+    <!-- map-vector css -->
+    <link rel="stylesheet" href="{{ ASSETS_ROOT }}/css/plugins/jsvectormap.min.css">
+
+{% endblock stylesheets %}
+
+{% block content %}	
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10">Vector Map</h5>
+                                </div>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/"><i
+                                                class="feather icon-home"></i></a></li>
+                                    <li class="breadcrumb-item"><a href="#!">Maps</a></li>
+                                    <li class="breadcrumb-item"><a href="#!">Vector Map</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ breadcrumb ] end -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <!-- [ Basic-Map ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Basic Map With Markers</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="world-map-markers" class="set-map" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ Basic-Map ] end -->
+                            <!-- [ world-merc-Map ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>world [merc] Map</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="world-merc" class="set-map" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ world-merc-Map ] end -->
+                            <!-- [ Canada-Map ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Canada Map</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="canada" class="set-map" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ Canada-Map ] end -->
+                            <!-- [ iraq-Map ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>iraq Map</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="iraq" class="set-map" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ iraq-Map ] end -->
+                            <!-- [ italy-Map ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>italy Map</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="italy" class="set-map" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ italy-Map ] end -->
+                            <!-- [ russia-Map ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>russia Map</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="russia" class="set-map" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ russia-Map ] end -->
+                            <!-- [ spain-Map ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>spain Map</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="spain" class="set-map" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ spain-Map ] end -->
+                            <!-- [ us-aea-en-Map ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>us-aea-en Map</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="us-aea-en" class="set-map" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ us-aea-en-Map ] end -->
+                            <!-- [ us-lcc-en-Map ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>us-lcc-en Map</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="us-lcc-en" class="set-map" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ us-lcc-en-Map ] end -->
+                            <!-- [ us-merc-en ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>us-merc-en Map</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="us-merc-en" class="set-map" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ us-merc-en-Map ] end -->
+                            <!-- [ us-mill-en-Map ] start -->
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>us-mill-en Map</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="us-mill-en" class="set-map" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ us-mill-en-Map ] end -->
+                        </div>
+                        <!-- [ Main Content ] end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %} 
+
+<script src="{{ ASSETS_ROOT }}/js/plugins/jsvectormap.min.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/plugins/world.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/plugins/world-merc.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/pages/canada.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/pages/iraq.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/pages/italy.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/pages/russia.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/pages/spain.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/pages/us-aea-en.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/pages/us-lcc-en.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/pages/us-merc-en.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/pages/us-mill-en.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/pages/map-vector.js"></script>
+
+{% endblock javascripts %}

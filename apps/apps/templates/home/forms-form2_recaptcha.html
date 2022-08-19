@@ -1,0 +1,73 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Forms recaptcha  {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}	
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ breadcrumb ] start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12">
+                                        <div class="page-header-title">
+                                            <h5 class="m-b-10">Google reCaptcha</h5>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item"><a href="#!">Form Plugins</a></li>
+                                            <li class="breadcrumb-item"><a href="#!">Google reCaptcha</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- [ breadcrumb ] end -->
+                        <!-- [ Main Content ] start -->
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                <p class="lead">reCAPTCHA protects you against spam and other types of automated abuse. Here, we explain how to add reCAPTCHA to your site or application.</p>
+                                <p class="f-w-500">Check out <a href="https://developers.google.com/recaptcha/intro" target="_blank" class="badge badge-secondary">Github</a></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- [ form-element ] start -->
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="form-group mb-0 row">
+                                                <label class="col-form-label col-lg-3 col-sm-12 text-lg-end">reCaptcha</label>
+                                                <div class="col-lg-4 col-md-9 col-sm-12">
+                                                    <div class="g-recaptcha" data-sitekey="6LdnLwgUAAAAAAIb9L3PQlHQgvSCi16sYgbMIMFR"></div>
+                                                </div>
+                                                <script src='https://www.google.com/recaptcha/api.js'></script>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ form-element ] end -->
+                        </div>
+                        <!-- [ Main Content ] end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

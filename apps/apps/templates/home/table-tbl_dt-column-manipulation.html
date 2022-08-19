@@ -1,0 +1,140 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Tables DT Column Manipulation {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="{{ ASSETS_ROOT }}/css/plugins/style.css">
+
+{% endblock stylesheets %}
+
+{% block content %}	
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10">Column Manipulation</h5>
+                                </div>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/"><i
+                                                class="feather icon-home"></i></a></li>
+                                    <li class="breadcrumb-item"><a href="#!">Table</a></li>
+                                    <li class="breadcrumb-item"><a href="#!">Column Manipulation</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ breadcrumb ] end -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <!-- [ basic-table ] start -->
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Column Manipulation</h5>
+                                    </div>
+                                    <div class="card-block table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table" id="pc-dt-column-manipulation">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ basic-table ] end -->
+                        </div>
+                        <!-- [ Main Content ] end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="{{ ASSETS_ROOT }}/js/plugins/simple-datatables.js"></script>
+<script>
+    var columnData = [{
+        select: 0,
+        render: function (data) {
+            return `${data} (${(~~(Math.random() * (70 - 18) + 18))})`;
+        }
+    }, {
+        select: 3,
+        type: "date",
+        format: "YYYY/DD/MM",
+        sort: "desc",
+    }];
+    var labelData = {
+        placeholder: "Search students...",
+        perPage: "Show {select} students per page",
+        noRows: "No students to display",
+        info: "Showing {start} to {end} of {rows} students (Page {page} of {pages} pages)"
+    };
+    var datatable = new simpleDatatables.DataTable("#pc-dt-column-manipulation", {
+        ajax: "{{ ASSETS_ROOT }}/json/datatable.json",
+        columns: columnData,
+        labels: labelData
+    });
+    datatable.on("datatable.init", function () {
+        var url = "{{ ASSETS_ROOT }}/json/datatable.column.json";
+        fetch(url).then(function (response) {
+                return response.json();
+            })
+            .then(function (column) {
+                column.render = function (data, cell, row) {
+                    return data + "<button type='button' data-id='" + row.dataIndex +
+                        "' class='btn btn-sm btn-primary pull-right notify'>Click Me</button>";
+                };
+                datatable.columns().add(column);
+            });
+    });
+    var notify = function (e) {
+        if (e.target.nodeName === "BUTTON") {
+            var index = parseInt(e.target.getAttribute("data-id"), 10);
+            var row = datatable.activeRows[index];
+            var message = [
+                "This is row ",
+                (row.rowIndex),
+                " of ",
+                datatable.options.perPage,
+                " rendered rows and row ",
+                (index + 1),
+                " of ",
+                datatable.data.length,
+                " total rows."
+            ];
+            var data = [].slice.call(row.cells).map(function (cell) {
+                return cell.data;
+            });
+            message = message.join("");
+            message = message + "\n\nThe row data is:\n" + JSON.stringify(data);
+            alert(message);
+        }
+    };
+    datatable.body.addEventListener("click", notify);
+    datatable.on("datatable.sort", function () {
+        this.activeRows.forEach(function (row) {
+            row.cells[row.cells.length - 1].lastElementChild.setAttribute("data-id", row.dataIndex);
+        });
+    });
+</script>
+
+{% endblock javascripts %}

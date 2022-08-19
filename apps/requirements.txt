@@ -1,0 +1,26 @@
+loguru
+cryptography==2.6.1
+Django==3.2.6
+django-environ
+Jinja2
+whitenoise
+gunicorn==20.1.0
+psycopg2-binary==2.9.1
+django-widget-tweaks
+imutils
+ujson
+pybase64
+pylint
+pytz==2018.9
+autopep8
+pdf2image
+# opencv-python
+# easyocr
+# pytesseract
+# Pillow
+# Image
+# pyyaml
+matplotlib
+# Clova AI Research, NAVER, craft-text-detection 0.0.2
+# craft-text-detection
+craft-text-detector
