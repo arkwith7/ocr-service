@@ -97,15 +97,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-if os.environ.get('DB_ENGINE') and os.environ.get('DB_ENGINE') == "mysql":
+if os.environ.get('DB_ENGINE') and os.environ.get('DB_ENGINE') == "postgrsql":
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.getenv('DB_NAME', 'appseed_db'),
-            'USER': os.getenv('DB_USERNAME', 'appseed_db_usr'),
-            'PASSWORD': os.getenv('DB_PASS', 'pass'),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME', 'ocr_apps_db'),
+            'USER': os.getenv('DB_USERNAME', 'ocr_admin'),
+            'PASSWORD': os.getenv('DB_PASS', 'ocr_admin'),
             'HOST': os.getenv('DB_HOST', 'localhost'),
-            'PORT': os.getenv('DB_PORT', 3306),
+            'PORT': os.getenv('DB_PORT', 5432),
         },
     }
 else:
@@ -115,6 +115,7 @@ else:
             'NAME': 'db.sqlite3',
         }
     }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -195,8 +196,8 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
-SITE_ID = 3
-
+SITE_ID = 4
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 SERVER = env('SERVER', default='127.0.0.1')

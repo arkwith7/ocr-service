@@ -1,25 +1,46 @@
 version: '3.8'
 services:
-  appseed-app:
-    container_name: appseed_app
+  ocr-app:
+    container_name: ocr_app
+    build: .
+    # command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn --config gunicorn-cfg.py core.wsgi
+    # ports:
+    #   - 8000:5005
+    volumes:
+      - static_volume:/home/app/web/staticfiles
     restart: always
     env_file: .env
-    build: .
+    depends_on:
+      - db
     networks:
       - db_network
       - web_network
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=ocr_admin
+      - POSTGRES_PASSWORD=ocr_admin
+      - POSTGRES_DB=ocr_apps_db
   nginx:
     container_name: nginx
     restart: always
     image: "nginx:latest"
     ports:
-      - "5085:5085"
+      - "8000:8000"
     volumes:
       - ./nginx:/etc/nginx/conf.d
+      - static_volume:/home/app/web/staticfiles
     networks:
       - web_network
     depends_on: 
-      - appseed-app
+      - ocr-app
+
+volumes:
+  postgres_data:
+  static_volume:
 networks:
   db_network:
     driver: bridge
