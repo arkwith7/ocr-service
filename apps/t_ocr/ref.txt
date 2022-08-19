@@ -1,2 +1,0 @@
-- Flask send_file() equivalent in Django
-https://stackoverflow.com/questions/66082305/flask-send-file-equivalent-in-django

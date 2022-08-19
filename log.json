@@ -1,0 +1,23 @@
+{
+    "backend": "django",
+    "db_name": "",
+    "db_pass": "",
+    "db_type": "sqlite",
+    "db_user": "",
+    "dbms": "1",
+    "description": "generated product",
+    "design": "datta-able-pro",
+    "docker": "1",
+    "err_code": 0,
+    "frontend": "",
+    "heroku": "0",
+    "pattern": "mvc",
+    "pro": "1",
+    "task_id": "83168d7a-c18b-47cd-ad52-b431e890194e",
+    "task_info": "Task is finished",
+    "task_output": "83168d7a-c18b-47cd-ad52-b431e890194e.zip",
+    "task_result": "SUCCESS",
+    "task_state": "FINISHED",
+    "task_ts_end": "2022-06-13-11-37-30",
+    "task_ts_start": "2022-06-13-11-35-58"
+}

@@ -1,0 +1,209 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} User List {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="{{ ASSETS_ROOT }}/css/plugins/style.css">
+
+{% endblock stylesheets %}
+
+{% block content %}	
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ breadcrumb ] start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12">
+                                        <div class="page-header-title">
+                                            <h5 class="m-b-10">User List</h5>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item"><a href="#!">User</a></li>
+                                            <li class="breadcrumb-item"><a href="#!">User List</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- [ breadcrumb ] end -->
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card user-profile-list">
+                                    <div class="card-body">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="user-list-table" class="table nowrap">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- [ Main Content ] end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form class="form">{% csrf_token %}
+      <div class="modal-body" id="form">
+      </div>
+     <div id="alert" class="alert alert-danger m-3 p-2 d-none"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input type="submit" class="btn btn-primary submit-btn" value="Save Changes">
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form id="confirmDeleteForm">{% csrf_token %}
+      <div class="modal-body" id="form">
+          <div id="confirmDeleteAlert" class="alert alert-danger d-none">Alert</div>
+          Are you sure to delete this user?
+      </div>
+     <div id="alert" class="alert alert-danger m-3 p-2 d-none"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input type="submit" class="btn btn-danger submit-btn" value="Confirm">
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+<!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="{{ ASSETS_ROOT }}/js/plugins/simple-datatables.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/user-list.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/data.js"></script>
+<script src="{{ ASSETS_ROOT }}/js/form.js"></script>
+<script>
+
+    setStaticAddress('{{ ASSETS_ROOT }}');
+
+    let data = [
+        {% for user in users %}
+              {{% for key, val in user.items %}
+                '{{ key }}': '{{ val }}',
+              {% endfor %}},
+            {% endfor %}
+    ];
+
+    const headings = ['user' ,'email', 'website' , 'phone' , 'registration_date' , 'status']
+
+    setData(data , headings)
+
+    const tempData = data.map((item,i) =>
+        [`<div class="d-flex gap-3 align-items-center"> <img class="rounded-circle" src="${item.image ? item.image : '{{ ASSETS_ROOT }}/images/user/avatar-5.jpg'}" width="45px" height="45px" /> <p> ${item.email} <br/> <span class="fw-light">${item.username} </span></p> </div>` ,
+            item.website, item.phone, item.registration_date,
+            `<div class="form-switch">
+                <input class="form-check-input status" type="checkbox" id="${item.username}" ${(item.status === '1') ? 'checked'  : ''}>
+            </div>`,
+            `<div class="overlay-edit">
+                <button type="button"
+                    class="btn btn-icon btn-success edit feather icon-check-circle" id="${item.username}"
+                        data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
+                <button type="button" class="btn btn-icon btn-danger delete feather icon-trash-2" id="${item.username}"
+                         data-bs-toggle="modal" data-bs-target="#confirmModal">
+                        </button>
+            </div>`
+        ]
+    )
+
+    const dataTable = new simpleDatatables.DataTable("#user-list-table",{data:
+        {
+            headings: ['user' , 'website' , 'phone' , 'registration_date' , 'status',''],
+            data: tempData,
+        }
+    });
+
+
+    document.getElementsByClassName('form')[0].onsubmit = (e) => {
+        e.preventDefault()
+        const formData = new FormData( document.getElementsByClassName('form')[0] )
+        const alert = document.querySelector('#alert')
+        alert.textContent = ''
+        fetch (`/user/${formData.get('username')}/`, {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if(!response.ok) {
+                    return response.text().then(text => { throw new Error(text) })
+                } else {
+                    return response.text()
+                }
+            })
+            .then((result) => {
+                location.reload()
+                if (!alert.classList.contains('d-none'))
+                        alert.classList.add('d-none')
+            })
+            .catch((err) => {
+                const errors = JSON.parse(err.toString().replace('Error: ','')).errors
+                alert.innerHTML = errors
+                alert.classList.remove('d-none')
+            })
+    }
+
+    document.getElementById('confirmDeleteForm').onsubmit = (e) => {
+        e.preventDefault();
+        const alert = document.querySelector('#confirmDeleteAlert')
+        fetch(`/user/${deleteId}/`,{
+            method: 'DELETE',
+            headers: {'X-CSRFToken' : csrfToken}
+        })
+            .then((response) => {
+                if(!response.ok) {
+                    return response.text().then(text => { throw new Error(text) })
+                } else {
+                    return response.text()
+                }
+            })
+            .then((result) => {
+                location.reload()
+                if (!alert.classList.contains('d-none'))
+                    alert.classList.add('d-none')
+            })
+            .catch((err) => {
+                const errors = JSON.parse(err.toString().replace('Error: ','')).errors
+                alert.textContent = errors
+                alert.classList.remove('d-none')
+            })
+    }
+</script>
+
+{% endblock javascripts %}
