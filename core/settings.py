@@ -17,7 +17,6 @@ LOGIN_ATTEMPTS = 3
 
 # *** *** *** *** *** *** ***
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +25,7 @@ CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY', default='S#perS3crEt_007')
+SECRET_KEY = env('SECRET_KEY', default='S#perS3crEt_007)d#*fghe)0doff')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
@@ -56,6 +55,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.google', # for Google OAuth 2.0
     "sslserver"
 ]
 
@@ -101,10 +101,10 @@ if os.environ.get('DB_ENGINE') and os.environ.get('DB_ENGINE') == "postgrsql":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME', 'ocr_apps_db'),
+            'NAME': os.getenv('DB_NAME', 'postgres'),
             'USER': os.getenv('DB_USERNAME', 'ocr_admin'),
-            'PASSWORD': os.getenv('DB_PASS', 'ocr_admin'),
-            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PASSWORD': os.getenv('DB_PASS', 'pass'),
+            'HOST': os.getenv('DB_HOST', 'localhost'), # set in docker-compose.yml
             'PORT': os.getenv('DB_PORT', 5432),
         },
     }
@@ -191,6 +191,10 @@ TWITTER_CLIENT_ID = os.getenv('TWITTER_ID', None)
 TWITTER_SECRET = os.getenv('TWITTER_SECRET', None)
 TWITTER_AUTH = TWITTER_SECRET is not None and TWITTER_CLIENT_ID is not None
 
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_ID', None)
+GOOGLE_SECRET = os.getenv('GOOGLE_SECRET', None)
+GOOGLE_AUTH = GOOGLE_SECRET is not None and GOOGLE_CLIENT_ID is not None
+
 AUTHENTICATION_BACKENDS = (
     "core.custom-auth-backend.CustomBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
@@ -199,6 +203,12 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 4
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# Additional configuration settings
+SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_LOGOUT_ON_GET= True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True
 
 SERVER = env('SERVER', default='127.0.0.1')
 
@@ -223,5 +233,15 @@ if TWITTER_AUTH:
             'client_id': TWITTER_CLIENT_ID,
             'secret': TWITTER_SECRET,
             'key': ''
+        }
+    }
+if GOOGLE_AUTH:
+    SOCIALACCOUNT_PROVIDERS['google'] = {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
         }
     }

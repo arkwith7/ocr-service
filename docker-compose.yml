@@ -1,49 +1,43 @@
 version: '3.8'
 services:
-  ocr-app:
+  web:
     container_name: ocr_app
     build: .
-    # command: python manage.py runserver 0.0.0.0:8000
-    command: gunicorn --config gunicorn-cfg.py core.wsgi
-    # ports:
-    #   - 8000:5005
-    volumes:
-      - static_volume:/home/app/web/staticfiles
+    command: python manage.py runserver 0.0.0.0:8000
+    # command: gunicorn --config gunicorn-cfg.py core.wsgi
+    expose:
+      - 8000
+    # volumes:
+    #   - static_volume:/home/app/web/staticfiles
     restart: always
     env_file: .env
     depends_on:
       - db
-    networks:
-      - db_network
-      - web_network
   db:
+    container_name: ocr_postgres
     image: postgres:13.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=ocr_admin
-      - POSTGRES_PASSWORD=ocr_admin
-      - POSTGRES_DB=ocr_apps_db
+      # POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_DATABASE: "${DB_NAME}"
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASS}"
   nginx:
-    container_name: nginx
+    container_name: ocr_nginx
+    build: ./nginx
     restart: always
-    image: "nginx:latest"
+    # image: "nginx:latest"
     ports:
-      - "8000:8000"
-    volumes:
-      - ./nginx:/etc/nginx/conf.d
-      - static_volume:/home/app/web/staticfiles
-    networks:
-      - web_network
+      - "8000:80"
+    # volumes:
+    #   - ./nginx:/etc/nginx/conf.d
+    #   - static_volume:/home/app/web/staticfiles
     depends_on: 
-      - ocr-app
+      - web
 
 volumes:
   postgres_data:
   static_volume:
-networks:
-  db_network:
-    driver: bridge
-  web_network:
-    driver: bridge
+
  

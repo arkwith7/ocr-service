@@ -46,6 +46,7 @@ RUN apt-get update && \
     libxrender-dev \
     libgl1-mesa-dev \
     libpcre3-dev \
+    libpq-dev \
     python3-dev \
     python3-setuptools \
     python3-pip \
@@ -60,7 +61,7 @@ RUN apt-get update && \
     tesseract-ocr-jpn \
     ghostscript \
     imagemagick \
-    postgresql postgresql-contrib postgresql-client \
+    # postgresql 
     python3-psycopg2 \
     sudo \
     # pdf2image
