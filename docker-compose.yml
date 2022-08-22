@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   web:
-    container_name: ocr_app
+    container_name: du_app
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     # command: gunicorn --config gunicorn-cfg.py core.wsgi
@@ -13,18 +13,27 @@ services:
     env_file: .env
     depends_on:
       - db
+    networks:
+      - web_network
+      - db_network
   db:
-    container_name: ocr_postgres
+    container_name: du_postgres
     image: postgres:13.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+      # copy the sql script to create tables
+      # - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
     environment:
       # POSTGRES_HOST_AUTH_METHOD: "trust"
       POSTGRES_DATABASE: "${DB_NAME}"
       POSTGRES_USER: "${DB_USERNAME}"
       POSTGRES_PASSWORD: "${DB_PASS}"
+    networks:
+      - db_network
   nginx:
-    container_name: ocr_nginx
+    container_name: du_nginx
     build: ./nginx
     restart: always
     # image: "nginx:latest"
@@ -35,9 +44,16 @@ services:
     #   - static_volume:/home/app/web/staticfiles
     depends_on: 
       - web
-
+    networks:
+      - web_network
 volumes:
   postgres_data:
   static_volume:
+
+networks:
+  db_network:
+    driver: bridge
+  web_network:
+    driver: bridge
 
  

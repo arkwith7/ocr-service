@@ -101,9 +101,9 @@ if os.environ.get('DB_ENGINE') and os.environ.get('DB_ENGINE') == "postgrsql":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME', 'postgres'),
-            'USER': os.getenv('DB_USERNAME', 'ocr_admin'),
-            'PASSWORD': os.getenv('DB_PASS', 'pass'),
+            'NAME': os.getenv('DB_NAME', 'du_db'),
+            'USER': os.getenv('DB_USERNAME', 'du_admin'),
+            'PASSWORD': os.getenv('DB_PASS', 'du_admin'),
             'HOST': os.getenv('DB_HOST', 'localhost'), # set in docker-compose.yml
             'PORT': os.getenv('DB_PORT', 5432),
         },
