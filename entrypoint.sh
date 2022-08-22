@@ -4,9 +4,9 @@
 
 # alias python='python3'
 
-if [ "$DATABASE" = "postgres" ]
+if [ "$DATABASE" = "du_db" ]
 then
-    echo "Waiting for postgres..."
+    echo "Waiting for du_db..."
 
     while ! nc -z $DB_HOST $DB_PORT; do
       sleep 0.1
