@@ -24,19 +24,21 @@ class ProductionConfig(Config):
     DEBUG = False
 
     # Security
-    SESSION_COOKIE_HTTPONLY = True
-    REMEMBER_COOKIE_HTTPONLY = True
-    REMEMBER_COOKIE_DURATION = 3600
+    # SESSION_COOKIE_HTTPONLY = True
+    # REMEMBER_COOKIE_HTTPONLY = True
+    # REMEMBER_COOKIE_DURATION = 3600
 
     # PostgreSQL database
-    SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
-        os.getenv('DB_ENGINE'   , 'mysql'),
-        os.getenv('DB_USERNAME' , 'appseed_db_usr'),
-        os.getenv('DB_PASS'     , 'pass'),
-        os.getenv('DB_HOST'     , 'localhost'),
-        os.getenv('DB_PORT'     , 3306),
-        os.getenv('DB_NAME'     , 'appseed_db')
-    )
+    # SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
+    #     os.getenv('DB_ENGINE'   , 'mysql'),
+    #     os.getenv('DB_USERNAME' , 'appseed_db_usr'),
+    #     os.getenv('DB_PASS'     , 'pass'),
+    #     os.getenv('DB_HOST'     , 'localhost'),
+    #     os.getenv('DB_PORT'     , 3306),
+    #     os.getenv('DB_NAME'     , 'appseed_db')
+    # )
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'db.sqlite3')
 
 
 class DebugConfig(Config):

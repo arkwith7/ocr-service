@@ -41,7 +41,11 @@ def url_to_image(url):
 
     return resized
 
-
+@blueprint.route('/')
+def route_default():
+    
+    return "수출입문서 OCR API 서버"
+    
 @blueprint.route('/ocr', methods=['POST'])
 def process():
     """

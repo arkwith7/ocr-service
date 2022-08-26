@@ -52,10 +52,11 @@ def convert_to_tiff(image_file):
 
 
 @blueprint.route('/index')
-@login_required
+# @login_required
 def index():
 
-    return render_template('home/index4.html', segment='index')
+    # return render_template('home/index4.html', segment='index')
+    return "수출입문서 OCR API 서버"
 
 @blueprint.route('/ocr_tesseract')
 @login_required

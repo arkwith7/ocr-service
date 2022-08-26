@@ -20,7 +20,9 @@ from apps.authentication.util import verify_pass
 
 @blueprint.route('/')
 def route_default():
-    return redirect(url_for('authentication_blueprint.login'))
+    
+    return "수출입문서 OCR API 서버"
+    # return redirect(url_for('authentication_blueprint.login'))
 
 
 # Login & Registration

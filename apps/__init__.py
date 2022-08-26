@@ -20,6 +20,7 @@ def register_extensions(app):
 
 def register_blueprints(app):
     for module_name in ('authentication', 'home', 'ocr_api'):
+    # for module_name in ('home', 'ocr_api'):
     # for module_name in ('authentication', 'home'):
         module = import_module('apps.{}.routes'.format(module_name))
         app.register_blueprint(module.blueprint)
